@@ -18,57 +18,59 @@ class LoginForm extends Component {
     if (this.props.isAuthenticated) return <Redirect to="/" />;
     else
       return (
-        <div className="card p-5 m-5">
-          <h2 className="mb-4">Login</h2>
-          <form onSubmit={this.submit}>
-            <div className="form-group row ">
-              <label
-                htmlFor="inputPassword"
-                className="col-lg-2 col-form-label text-lg-right text-sm-left"
-              >
-                Email:
-              </label>
-              <div className="col-lg-10">
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputText"
-                  placeholder="Email"
-                  onChange={e => this.setState({ email: e.target.value })}
-                />
+        <div className="container">
+          <div className="card p-5 m-5">
+            <h2 className="mb-4">Login</h2>
+            <form onSubmit={this.submit}>
+              <div className="form-group row ">
+                <label
+                  htmlFor="inputPassword"
+                  className="col-lg-2 col-form-label text-lg-right text-sm-left"
+                >
+                  Email:
+                </label>
+                <div className="col-lg-10">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="inputText"
+                    placeholder="Email"
+                    onChange={e => this.setState({ email: e.target.value })}
+                  />
+                </div>
               </div>
-            </div>
-            <div className="form-group row ">
-              <label
-                htmlFor="inputPassword"
-                className="col-lg-2 col-form-label text-lg-right text-sm-left"
-              >
-                Password:
-              </label>
-              <div className="col-lg-10 ">
-                <input
-                  type="password"
-                  className="form-control"
-                  id="inputPassword"
-                  placeholder="Password"
-                  onChange={e => this.setState({ password: e.target.value })}
-                />
+              <div className="form-group row ">
+                <label
+                  htmlFor="inputPassword"
+                  className="col-lg-2 col-form-label text-lg-right text-sm-left"
+                >
+                  Password:
+                </label>
+                <div className="col-lg-10 ">
+                  <input
+                    type="password"
+                    className="form-control"
+                    id="inputPassword"
+                    placeholder="Password"
+                    onChange={e => this.setState({ password: e.target.value })}
+                  />
+                </div>
               </div>
-            </div>
-            <button
-              onClick={this.submit}
-              type="button"
-              className="btn btn-dark float-right"
-            >
-              Login
-            </button>
-          </form>
+              <button
+                onClick={this.submit}
+                type="button"
+                className="btn btn-dark float-right"
+              >
+                Login
+              </button>
+            </form>
 
-          {this.props.error && (
-            <div className="alert alert-warning mt-5" role="alert">
-              {this.props.error}
-            </div>
-          )}
+            {this.props.error && (
+              <div className="alert alert-warning mt-5" role="alert">
+                {this.props.error}
+              </div>
+            )}
+          </div>
         </div>
       );
   }
