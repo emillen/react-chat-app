@@ -7,10 +7,7 @@ import chatRouter from "./routes/chat";
 
 mongoose.connect("mongodb://localhost:27017/chat-app");
 
-const {
-  invalidUrlMiddleware,
-  authenticationMiddleware
-} = require("./middleware");
+import { invalidUrlMiddleware, authenticationMiddleware } from "./middleware";
 
 const app = express();
 
@@ -21,6 +18,6 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/authentication", authRouter);
 app.use(authenticationMiddleware);
 app.use("/chat", chatRouter);
-
 app.use(invalidUrlMiddleware);
+
 export default app;
