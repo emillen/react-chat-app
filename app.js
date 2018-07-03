@@ -26,4 +26,4 @@ app.get("/me", (req, res) => {
 });
 
 app.use(invalidUrlMiddleware);
-module.exports = app;
+export default app;
