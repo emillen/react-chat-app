@@ -20,7 +20,7 @@ class LoginForm extends Component {
       return (
         <div className="container">
           <div className="card p-5 m-5">
-            <h2 className="mb-4">Login</h2>
+            <h2 className="mb-4 text-center">Login</h2>
             <form onSubmit={this.submit}>
               <div className="form-group row ">
                 <label
