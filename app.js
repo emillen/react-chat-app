@@ -2,10 +2,13 @@ const createError = require("http-errors");
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
+const mongoose = require("mongoose");
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const authRouter = require("./routes/auth");
+
+mongoose.connect("mongodb://localhost:27017/chat-app");
 
 const {
   invalidUrlMiddleware,
