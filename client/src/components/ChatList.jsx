@@ -20,7 +20,7 @@ const ChatListItem = ({ title, usercount, date, active }) => {
   return (
     <a className={"list-group-item list-group-item-action" + (active ? " bg-dark text-light" : "")}>
       <h5>{title}</h5>
-      <small>Usercount: {usercount}, last update: date.toString()</small>
+      <small>Usercount: {usercount}</small>
     </a>
   );
 };

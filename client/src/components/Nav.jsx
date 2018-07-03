@@ -4,7 +4,7 @@ import { PropTypes } from "prop-types";
 const Nav = ({ isAuthenticated, logout }) => {
   return (
     <nav style={{height: "7vh"}} className="navbar navbar-dark bg-dark text-light justify-content-between">
-      <a className="navbar-brand">My React Playground</a>
+      <a className="navbar-brand">Chat Against Humanity</a>
       {isAuthenticated && (
         <button onClick={logout} className="btn btn-dark">
           LogOut
