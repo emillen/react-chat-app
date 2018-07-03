@@ -21,9 +21,6 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/authentication", authRouter);
 app.use(authenticationMiddleware);
 app.use("/chat", chatRouter);
-app.get("/me", (req, res) => {
-  res.status(200).send(JSON.stringify({ username: "emilio", likes: "kitten" }));
-});
 
 app.use(invalidUrlMiddleware);
 export default app;
