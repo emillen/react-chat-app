@@ -55,9 +55,7 @@ router.post("/register", (req, res) => {
 
       return newUser.save();
     })
-    .then(newUser => {
-      res.status(200).send({ message: "Account added" });
-    })
+    .then(() => res.status(200).send({ message: "Account added" }))
     .catch(err => {
       res.status(409).send({ message: "User already exists" });
     });
