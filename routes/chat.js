@@ -30,4 +30,14 @@ router.post("/", (req, res) => {
     });
 });
 
+router.get("/", (_, res) => {
+  Chat.find({})
+    .select(["name"])
+    .then(chats => res.status(200).send(chats))
+    .catch(err =>
+      res.status(500).send({ error: true, message: "internal server error" })
+    );
+});
+
+
 export default router;
