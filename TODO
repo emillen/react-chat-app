@@ -1,6 +1,18 @@
 Features: 
 	☐ list/search chats
-	☐ chat feature -> socketIo
-	☐ register
+	☐ chat feature autoupdate -> socketIo
+	☐ register on client
 	☐ search for users
 	☐ join chats
+	
+
+
+client: 
+	☐ list chats @started(18-07-03 23:58)
+	☐ read chats @started(18-07-03 23:58)
+
+Archive:
+  ✔ add chats @done(18-07-03 23:58) @project(server)
+  ✔ list chats @done(18-07-03 23:58) @project(server)
+  ✔ real login using db @done(18-07-03 23:58) @project(server)
+  ✔ register user on server @done(18-07-03 23:57) @project(Features)
