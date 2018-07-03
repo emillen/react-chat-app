@@ -1,5 +1,5 @@
 Features: 
-	☐ list/search chats
+	☐ list/search chats @started(18-07-03 23:59)
 	☐ chat feature autoupdate -> socketIo
 	☐ register on client
 	☐ search for users
@@ -10,6 +10,8 @@ Features:
 client: 
 	☐ list chats @started(18-07-03 23:58)
 	☐ read chats @started(18-07-03 23:58)
+	☐ auto update chats with socketIo
+	☐ enable users to see which chats has been updated with socketio 
 
 Archive:
   ✔ add chats @done(18-07-03 23:58) @project(server)
