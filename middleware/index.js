@@ -3,25 +3,20 @@ import Promise from "bluebird";
 
 const verify = Promise.promisify(jwt.verify);
 
-const authenticationMiddleware = (req, res, next) => {
+export const authenticationMiddleware = (req, res, next) => {
   const token = req.headers["x-access-token"];
   if (!token)
     return res.status(401).send({ auth: false, message: "No token provided." });
-  jwt.verify(token, "asdasd", function(err, decoded) {
-    if (err)
-      return res
+
+  verify(token, "asdasd")
+    .then(() => next())
+    .catch(err =>
+      res
         .status(500)
-        .send({ auth: false, message: "Failed to authenticate token." });
-
-    next();
-  });
+        .send({ auth: false, message: "Failed to authenticate token." })
+    );
 };
 
-const invalidUrlMiddleware = (req, res, next) => {
+export const invalidUrlMiddleware = (_, res) => {
   res.status(404).send({ message: "404 not found" });
-};
-
-module.exports = {
-  authenticationMiddleware,
-  invalidUrlMiddleware
 };
