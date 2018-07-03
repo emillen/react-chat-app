@@ -1,18 +1,22 @@
-const express = require("express");
-const router = express.Router();
-const jwt = require("jsonwebtoken");
-const Promise = require("bluebird");
-const bcrypt = Promise.promisifyAll(require("bcrypt"));
-const User = Promise.promisifyAll(require("../models/User"));
+import express from "express";
+import jwt from "jsonwebtoken";
+import Promise from "bluebird";
+import bcryptModule from "bcrypt";
+import User from "../models/User";
 
-router.post("/", function(req, res) {
+const router = express.Router();
+const bcrypt = Promise.promisifyAll(bcryptModule);
+
+router.post("/", (req, res) => {
   User.findOne({ email: req.body.email })
     .then(user => {
       if (!user) return Promise.reject("User does not exist");
 
       return Promise.all([
         user,
-        bcrypt.compare(req.body.password, user.passwordHash).catch(() => Promise.reject("Password does not match"))
+        bcrypt
+          .compare(req.body.password, user.passwordHash)
+          .catch(() => Promise.reject("Password does not match"))
       ]);
     })
     .then(promises => {
@@ -28,7 +32,7 @@ router.post("/", function(req, res) {
     });
 });
 
-router.post("/register", function(req, res) {
+router.post("/register", (req, res) => {
   const passwordRegexp = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{12,}/;
   const emailRegexp = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
   if (!req.body.password.match(passwordRegexp))
@@ -59,4 +63,4 @@ router.post("/register", function(req, res) {
     });
 });
 
-module.exports = router;
+export default router;

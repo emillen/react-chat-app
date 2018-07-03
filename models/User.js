@@ -1,7 +1,9 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
+import Promise from "bluebird";
+
 const Schema = mongoose.Schema;
 
-var userSchema = new Schema({
+const userSchema = new Schema({
   username: { type: String, index: { unique: true } },
   email: { type: String, index: { unique: true } },
   passwordHash: String,
@@ -10,4 +12,4 @@ var userSchema = new Schema({
 
 const User = mongoose.model("User", userSchema);
 
-module.exports = User;
+export default Promise.promisifyAll(User);

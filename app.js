@@ -1,13 +1,9 @@
-const createError = require("http-errors");
-const express = require("express");
-const path = require("path");
-const cookieParser = require("cookie-parser");
-const mongoose = require("mongoose");
-
-const indexRouter = require("./routes/index");
-const usersRouter = require("./routes/users");
-const authRouter = require("./routes/auth");
-const chatRouter = require("./routes/chat");
+import express from "express";
+import path from "path";
+import cookieParser from "cookie-parser";
+import mongoose from "mongoose";
+import authRouter from "./routes/auth";
+import chatRouter from "./routes/chat";
 
 mongoose.connect("mongodb://localhost:27017/chat-app");
 

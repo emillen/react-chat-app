@@ -1,4 +1,7 @@
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
+import Promise from "bluebird";
+
+const verify = Promise.promisify(jwt.verify);
 
 const authenticationMiddleware = (req, res, next) => {
   const token = req.headers["x-access-token"];

@@ -1,17 +1,20 @@
-const express = require("express");
+import express from "express";
+import Promise from "bluebird";
+import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
+
+import User from "../models/User";
+import Chat from "../models/Chat";
+
+const verify = Promise.promisify(jwt.verify);
 const router = express.Router();
-const Promise = require("bluebird");
-const ObjectId = require("mongoose").Types.ObjectId;
-const verify = Promise.promisify(require("jsonwebtoken").verify);
-const User = Promise.promisifyAll(require("../models/User"));
-const Chat = Promise.promisifyAll(require("../models/Chat"));
+const ObjectId = mongoose.Types.ObjectId;
 
 router.post("/", (req, res) => {
   if (!req.body.name || req.body.name.length < 5)
     return res.status(400).send({ message: "Name is not long enough." });
 
-	const token = req.headers["x-access-token"];
-	console.log(verify);
+  const token = req.headers["x-access-token"];
   verify(token, "asdasd")
     .then(decoded => User.findOne({ _id: new ObjectId(decoded.id) }))
     .then(user => {
@@ -22,9 +25,9 @@ router.post("/", (req, res) => {
       return chat.save();
     })
     .then(() => res.status(200).send({ added: true, message: "Chat added" })) //response to client
-    .catch((err) => {
-      res.status(500).send({err: true, message: "Chat already exists"});
+    .catch(err => {
+      res.status(500).send({ err: true, message: "Chat already exists" });
     });
 });
 
-module.exports = router;
+export default router;
