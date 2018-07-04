@@ -66,7 +66,7 @@ const Chat = () => {
         ))}
       </div>
       <div className="mt-2">
-        <textarea className="form-control" rows="5" />
+        <textarea placeholder="Write your message here..." className="form-control border-primary" rows="5" />
       </div>
     </div>
   );
