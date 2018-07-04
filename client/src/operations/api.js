@@ -37,25 +37,3 @@ export const logoutFromServer = dispatch => {
   localStorage.removeItem("serverTokenExpiration");
   dispatch(logout());
 };
-
-export const fetchMeFromServer = dispatch => {
-  dispatch(fetchMe());
-  axios
-    .get("/me", {
-      headers: {
-        "Content-Type": "application/json",
-        "x-access-token": localStorage.getItem("serverToken")
-      }
-    })
-    .then(response => {
-      return response.data;
-    })
-    .then(data => {
-      return dispatch(fetchMeSuccess(data));
-    })
-    .catch(err => {
-      if (err.response.status === 500 || err.response.status === 401)
-        return logoutFromServer(dispatch);
-      dispatch(meError(err));
-    });
-};
