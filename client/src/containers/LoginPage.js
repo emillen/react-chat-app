@@ -4,7 +4,7 @@ import LoginForm from "../components/LoginForm";
 
 const mapStoreToProps = store => ({
   isAuthenticated: store.auth.isAuthenticated,
-  error: store.auth.error
+  error: store.error
 });
 
 const mapDispatchToProps = dispatch => ({
