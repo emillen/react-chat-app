@@ -1,4 +1,4 @@
-import { AUTHENTICATE, SUCCESS, ERROR, LOGOUT } from "./types";
+import { AUTHENTICATE, AUTHENTICATION_SUCCESS, LOGOUT } from "./types";
 
 export const authenticate = () => {
   return {
@@ -8,7 +8,7 @@ export const authenticate = () => {
 
 export const success = token => {
   return {
-    type: SUCCESS,
+    type: AUTHENTICATION_SUCCESS,
     token
   };
 };
@@ -19,9 +19,3 @@ export const logout = () => {
   };
 };
 
-export const error = errormsg => {
-  return {
-    type: ERROR,
-    error: errormsg
-  };
-};

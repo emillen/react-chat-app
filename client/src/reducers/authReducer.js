@@ -1,4 +1,4 @@
-import { AUTHENTICATE, SUCCESS, ERROR, LOGOUT } from "../actions/types";
+import { AUTHENTICATE, AUTHENTICATION_SUCCESS, ERROR, LOGOUT } from "../actions/types";
 const initialState = {
   isAuthenticated:
     !!localStorage.getItem("serverToken") &&
@@ -17,7 +17,7 @@ export default (state = initialState, action) => {
         { isInProgress: true, isAuthenticated: false, error: false }
       );
     }
-    case SUCCESS: {
+    case AUTHENTICATION_SUCCESS: {
       console.log("nu är vi klara");
       return Object.assign(
         {},
