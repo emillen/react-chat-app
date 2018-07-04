@@ -6,7 +6,7 @@ export const authenticate = () => {
   };
 };
 
-export const success = token => {
+export const authenticationSuccess = token => {
   return {
     type: AUTHENTICATION_SUCCESS,
     token

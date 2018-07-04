@@ -1,4 +1,4 @@
-import { AUTHENTICATE, AUTHENTICATION_SUCCESS, ERROR, LOGOUT } from "../actions/types";
+import { AUTHENTICATE, AUTHENTICATION_SUCCESS, LOGOUT } from "../actions/types";
 const initialState = {
   isAuthenticated:
     !!localStorage.getItem("serverToken") &&
@@ -14,27 +14,20 @@ export default (state = initialState, action) => {
       console.log("nu kör vi");
       return Object.assign(
         {},
-        { isInProgress: true, isAuthenticated: false, error: false }
+        { isInProgress: true, isAuthenticated: false }
       );
     }
     case AUTHENTICATION_SUCCESS: {
       console.log("nu är vi klara");
       return Object.assign(
         {},
-        { isInProgress: false, isAuthenticated: true, error: false }
+        { isInProgress: false, isAuthenticated: true }
       );
     }
     case LOGOUT: {
       return Object.assign(
         {},
-        { isAuthenticated: false, isInProgress: false, error: false }
-      );
-    }
-    case ERROR: {
-      console.log("yep");
-      return Object.assign(
-        {},
-        { isInProgress: false, isAuthenticated: false, error: action.error }
+        { isAuthenticated: false, isInProgress: false}
       );
     }
     default:

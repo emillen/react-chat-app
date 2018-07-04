@@ -1,5 +1,26 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Redirect } from "react-router-dom";
+
+class TimeoutRedirect extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+    this.waitUntilRedirect = this.waitUntilRedirect.bind(this);
+  }
+
+	componentDidMount() {
+		this.waitUntilRedirect();
+	}
+
+  waitUntilRedirect() {
+    setTimeout(() => {this.setState({ showTimeout: true })}, 1000);
+  }
+
+  render() {
+    return <div>{this.state.showTimeout && <Redirect to="/login" />}</div>;
+  }
+}
 
 class RegisterForm extends Component {
   constructor(props) {
@@ -8,9 +29,15 @@ class RegisterForm extends Component {
     this.submitForm = this.submitForm.bind(this);
   }
 
+
+
   submitForm(e) {
     e.preventDefault();
-    this.props.onSubmit(this.state.email, this.state.username, this.state.password)
+    this.props.onSubmit(
+      this.state.email,
+      this.state.username,
+      this.state.password
+    );
   }
 
   render() {
@@ -78,6 +105,17 @@ class RegisterForm extends Component {
             onClick={this.submitForm}
           />
         </form>
+        {this.props.error && (
+          <div className="alert alert-warning mt-5" role="alert">
+            {this.props.error}
+          </div>
+        )}
+        {this.props.success && (
+          <div className="alert alert-success mt-5" role="alert">
+            Account added
+            <TimeoutRedirect />
+          </div>
+        )}
       </div>
     );
   }

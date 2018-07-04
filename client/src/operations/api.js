@@ -1,13 +1,10 @@
 import axios from "axios";
 import moment from "moment";
 import jwtDecode from "jwt-decode";
-import {
-  authenticate,
-  success,
-  logout
-} from "../actions/auth";
+import { authenticate, authenticationSuccess, logout } from "../actions/auth";
+import { register as registerAction, registerSuccess } from "../actions/register";
 
-import {error, errorClear} from "../actions/error";
+import { error, errorClear } from "../actions/error";
 export const authenticateToServer = (dispatch, email, password) => {
   dispatch(authenticate());
   axios
@@ -23,9 +20,9 @@ export const authenticateToServer = (dispatch, email, password) => {
       localStorage.setItem(
         "serverTokenExpiration",
         moment(exp * 1000).toDate()
-			);
-			dispatch(errorClear());
-      dispatch(success());
+      );
+      dispatch(errorClear());
+      dispatch(authenticationSuccess());
     })
     .catch(err => {
       dispatch(error(err.response.data.message));
@@ -33,8 +30,23 @@ export const authenticateToServer = (dispatch, email, password) => {
 };
 
 export const logoutFromServer = dispatch => {
-  console.log("hejsan");
   localStorage.removeItem("serverToken");
   localStorage.removeItem("serverTokenExpiration");
   dispatch(logout());
+};
+
+export const register = (dispatch, email, username, password) => {
+	console.log("register time")
+  dispatch(registerAction());
+  axios
+    .post(
+      "/authentication/register",
+      { email, username, password },
+      { headers: { "Content-Type": "application/json" } }
+    )
+    .then(() => {
+      dispatch(errorClear());
+      dispatch(registerSuccess());
+    })
+    .catch(err => {console.log(err);dispatch(error(err.response.data.message))});
 };
