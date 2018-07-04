@@ -5,10 +5,6 @@ import { PropTypes } from "prop-types";
 import Chat from "./Chat";
 import ChatList from "./ChatList";
 
-const styles = {
-  display: "flex",
-  flexDirection: "row"
-};
 
 class Home extends Component {
   render() {

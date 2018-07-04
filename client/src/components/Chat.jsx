@@ -19,7 +19,7 @@ const styles = {
 const Message = ({ user, date, text }) => {
   return (
     <div
-      style={{ "min-height": "min-content" }}
+      style={{ minHeight: "min-content" }}
       className="message card my-1 px-3 py-2"
     >
       <h5>{user}:</h5>
@@ -32,10 +32,10 @@ const Message = ({ user, date, text }) => {
 
 const fakeMessages = [
 	
-  { user: "Mrcooldude", message: "Hahaha", date: new Date(), id: 4 },
+  { user: "Mrcooldude", message: "Hahaha", date: new Date(), id: 10 },
 	{ user: "emil", message: "mhmmm!", date: new Date(), id: 5 },
   { user: "Mrcooldude", message: "Hahaha", date: new Date(), id: 4 },
-  { user: "emil", message: "mhmmm!", date: new Date(), id: 5 },
+  { user: "emil", message: "mhmmm!", date: new Date(), id: 6 },
   { user: "emil", message: "blargh hahahah!", date: new Date(), id: 1 },
   { user: "herdu", message: "Vad säger du?", date: new Date(), id: 2 },
   {
@@ -44,8 +44,8 @@ const fakeMessages = [
     date: new Date(),
     id: 3
   },
-  { user: "Mrcooldude", message: "Hahaha", date: new Date(), id: 4 },
-  { user: "emil", message: "mhmmm!", date: new Date(), id: 5 }
+  { user: "Mrcooldude", message: "Hahaha", date: new Date(), id: 9 },
+  { user: "emil", message: "mhmmm!", date: new Date(), id: 7 }
 ];
 
 const Chat = () => {
@@ -66,7 +66,7 @@ const Chat = () => {
         ))}
       </div>
       <div className="mt-2">
-        <textarea class="form-control" rows="5" />
+        <textarea className="form-control" rows="5" />
       </div>
     </div>
   );
