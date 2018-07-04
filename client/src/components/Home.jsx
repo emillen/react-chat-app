@@ -12,19 +12,6 @@ const styles = {
 };
 
 class Home extends Component {
-  componentDidMount() {
-    this.doSomeFetching = this.doSomeFetching.bind(this);
-    this.doSomeFetching();
-  }
-
-  doSomeFetching() {
-    console.log("doing some fetching");
-    this.props.fetchData();
-    setTimeout(() => {
-      this.doSomeFetching();
-    }, 10000);
-  }
-
   render() {
     if (!this.props.isAuthenticated) {
       return <Redirect to="/login" />;
