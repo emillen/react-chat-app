@@ -7,8 +7,7 @@ import ChatList from "./ChatList";
 
 const styles = {
   display: "flex",
-	flexDirection: "row",
-	
+  flexDirection: "row"
 };
 
 class Home extends Component {
@@ -17,7 +16,7 @@ class Home extends Component {
       return <Redirect to="/login" />;
     } else
       return (
-        <div style={{height: "93vh"}} className="d-flex flex-row">
+        <div style={{ height: "93vh" }} className="d-flex flex-row">
           <ChatList />
           <Chat />
         </div>
@@ -26,7 +25,6 @@ class Home extends Component {
 }
 
 Home.propTypes = {
-  fetchData: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool.isRequired
 };
 
