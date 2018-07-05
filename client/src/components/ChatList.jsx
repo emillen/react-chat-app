@@ -1,5 +1,5 @@
 import React from "react";
-
+import PropTypes from "prop-types";
 const fakeChatList = [
   { name: "enchatt", usercount: 0, lastmsg: new Date(), id: 1 },
   { name: "asdasd", usercount: 10, lastmsg: new Date(), id: 2 },
@@ -13,31 +13,41 @@ const fakeChatList = [
   { name: "asasd asd asd asd", usercount: 52, lastmsg: new Date(), id: 10 },
   { name: "qweqwetqtsa", usercount: 200, lastmsg: new Date(), id: 11 },
   { name: "xcbxcbsdf", usercount: 3, lastmsg: new Date(), id: 12 },
-  { name: "asasd asd asd asd", usercount: 52, lastmsg: new Date(), id: 13 },
+  { name: "asasd asd asd asd", usercount: 52, lastmsg: new Date(), id: 13 }
 ];
 
-const ChatListItem = ({ title, usercount, date, active }) => {
+const ChatListItem = ({ title, active }) => {
   return (
-    <a className={"list-group-item list-group-item-action" + (active ? " bg-dark text-light" : "")}>
+    <a
+      className={
+        "list-group-item list-group-item-action" +
+        (active ? " bg-dark text-light" : "")
+      }
+    >
       <h5>{title}</h5>
-      <small>Usercount: {usercount}</small>
     </a>
   );
 };
+const ChatList = ({ list }) => (
+  <div
+    style={{ width: "25vw", overflowY: "scroll" }}
+    className="border-right border-dark list-group"
+  >
+    {list.map(chat => (
+      <ChatListItem
+        key={chat._id}
+        title={chat.name}
+        active={chat.name === "en annan chatt"}
+      />
+    ))}
+  </div>
+);
 
-const ChatList = () => {
-  return (
-    <div style={{ width: "25vw", overflowY:"scroll" }} className="border-right border-dark list-group">
-      {fakeChatList.map((chat, i) => (
-        <ChatListItem key={chat.id}
-          title={chat.name}
-          usercount={chat.usercount}
-					date={chat.lastmsg}
-					active={i === 5}
-        />
-      ))}
-    </div>
-  );
+ChatList.propTypes = {
+  list: PropTypes.array.isRequired,
+  activeChat: PropTypes.string,
+  changeChat: PropTypes.func,
+  getChatList: PropTypes.func
 };
 
 export default ChatList;

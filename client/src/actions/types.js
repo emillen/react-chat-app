@@ -1,7 +1,10 @@
 export const AUTHENTICATE = "AUTHENTICATE";
 export const ERROR = "ERROR";
-export const ERROR_CLEAR = "ERROR_CLEAR"
+export const ERROR_CLEAR = "ERROR_CLEAR";
 export const AUTHENTICATION_SUCCESS = "SUCCESS";
 export const LOGOUT = "LOGOUT";
 export const REGISTER = "REGISTER";
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
+export const GET_CHAT_LIST = "GET_CHAT_LIST"
+export const GET_CHAT_LIST_SUCESS = "GET_CHAT_LIST_SUCCESS";
+export const NEW_CHAT = "NEW_CHAT"

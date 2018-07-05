@@ -2,7 +2,14 @@ import axios from "axios";
 import moment from "moment";
 import jwtDecode from "jwt-decode";
 import { authenticate, authenticationSuccess, logout } from "../actions/auth";
-import { register as registerAction, registerSuccess } from "../actions/register";
+import {
+  register as registerAction,
+  registerSuccess
+} from "../actions/register";
+import {
+  getChatListSuccess,
+  getChatList as getChatListCreator
+} from "../actions/chatList";
 
 import { error, errorClear } from "../actions/error";
 export const authenticateToServer = (dispatch, email, password) => {
@@ -36,7 +43,6 @@ export const logoutFromServer = dispatch => {
 };
 
 export const register = (dispatch, email, username, password) => {
-	console.log("register time")
   dispatch(registerAction());
   axios
     .post(
@@ -48,5 +54,26 @@ export const register = (dispatch, email, username, password) => {
       dispatch(errorClear());
       dispatch(registerSuccess());
     })
-    .catch(err => {console.log(err);dispatch(error(err.response.data.message))});
+    .catch(err => {
+      console.log(err);
+      dispatch(error(err.response.data.message));
+    });
+};
+
+export const getChatList = dispatch => {
+	dispatch(getChatListCreator());
+	const token = localStorage.getItem("serverToken")
+  axios
+    .get(
+      "/chat",
+      { headers: { "Content-Type": "application/json", "x-access-token": token} }
+    )
+    .then(response => response.data)
+    .then(chatList => {
+      dispatch(errorClear());
+      dispatch(getChatListSuccess(chatList));
+    })
+    .catch(err => {
+      console.log(err.response.data.message);
+    });
 };

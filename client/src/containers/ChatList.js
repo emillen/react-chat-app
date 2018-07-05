@@ -1,15 +1,15 @@
-import Home from "../components/Home";
+import ChatList from "../components/ChatList";
 import { connect } from "react-redux";
 import { getChatList } from "../operations/api";
 
 const mapStoreToProps = store => ({
   isAuthenticated: store.auth.isAuthenticated,
-  chat: store.chat,
-  chatList: store.chatList
+  activeChat: store.chat.name,
+  list: store.chatList
 });
 
 const mapDispatchToProps = dispatch => ({
-	getChatList() {
+  getChatList() {
     return getChatList(dispatch);
   }
 });
@@ -17,4 +17,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStoreToProps,
   mapDispatchToProps
-)(Home);
+)(ChatList);
