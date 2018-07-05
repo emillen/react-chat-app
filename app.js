@@ -4,8 +4,10 @@ import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 import authRouter from "./routes/auth";
 import chatRouter from "./routes/chat";
-
+import Promise from "bluebird"
 mongoose.connect("mongodb://localhost:27017/chat-app");
+
+mongoose.Promise = Promise;
 
 import { invalidUrlMiddleware, authenticationMiddleware } from "./middleware";
 

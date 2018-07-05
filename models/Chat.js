@@ -6,7 +6,7 @@ const chatSchema = new Schema({
   name: { type: String, index: { unique: true } },
   createdBy: { type: Schema.Types.ObjectId, ref: "User" },
   messages: [
-    { text: String, user: { type: Schema.Types.ObjectId, ref: "User" } }
+    { type: Schema.Types.ObjectId, ref: "Message" }
   ],
   users: [{ type: Schema.Types.ObjectId, ref: "User" }]
 });
