@@ -17,9 +17,10 @@ const setupIo = http => {
       verify(socket.handshake.query.token, "asdasd")
         .then(decoded => {
           socket.decoded = decoded;
-          return User.findOne({ _id: decoded.id }).then(user => {
-            next();
-          });
+          return User.findOne({ _id: decoded.id });
+        })
+        .then(() => {
+          next();
         })
         .catch(err => {
           next(new Error("Authentication error"));
