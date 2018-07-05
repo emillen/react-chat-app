@@ -9,7 +9,9 @@ import rootReducer from "./reducers";
 import registerServiceWorker from "./registerServiceWorker";
 import { BrowserRouter } from "react-router-dom";
 
-const store = createStore(rootReducer);
+export const store = createStore(rootReducer);
+
+
 ReactDOM.render(
   <BrowserRouter>
     <Provider store={store}>

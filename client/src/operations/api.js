@@ -12,8 +12,12 @@ import {
 } from "../actions/chatList";
 
 import { displayChat } from "../actions/chat";
-
 import { error, errorClear } from "../actions/error";
+
+import { startSocket } from "./socket";
+
+const socket = startSocket();
+
 export const authenticateToServer = (dispatch, email, password) => {
   dispatch(authenticate());
   axios
@@ -87,9 +91,14 @@ export const getChat = (dispatch, chatId) => {
     })
     .then(response => response.data)
     .then(chat => {
+			socket.emit("join chat", chat._id);
       dispatch(errorClear());
       dispatch(displayChat(chat));
       return chat;
     })
     .catch(err => dispatch(error(err)));
+};
+
+export const sendMessage = message => {
+  socket.emit("message", message);
 };

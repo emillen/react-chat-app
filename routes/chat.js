@@ -41,7 +41,15 @@ router.get("/", (_, res) => {
 
 router.get("/:id", (req, res) => {
   Chat.findOne({ _id: new ObjectId(req.params.id) })
-    .then(chat => res.status(200).send(chat))
+    .populate({
+      path: "messages",
+      populate: { path: "user", model: User }
+    })
+    .exec()
+    .then(chat => {
+      console.log(chat);
+      res.status(200).send(chat);
+    })
     .catch(err =>
       res.status(500).send({ error: true, message: "Unknown server error" })
     );

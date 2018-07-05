@@ -2,6 +2,8 @@ import ioModule from "socket.io";
 import Promise from "bluebird";
 import jwtModule from "jsonwebtoken";
 import Chat from "./models/Chat";
+import User from "./models/User";
+import Message from "./models/Message";
 import mongoose from "mongoose";
 
 const ObjectId = mongoose.Types.ObjectId;
@@ -15,7 +17,9 @@ const setupIo = http => {
       verify(socket.handshake.query.token, "asdasd")
         .then(decoded => {
           socket.decoded = decoded;
-          next();
+          return User.findOne({ _id: decoded.id }).then(user => {
+            next();
+          });
         })
         .catch(err => {
           next(new Error("Authentication error"));
@@ -25,20 +29,42 @@ const setupIo = http => {
     }
   });
   io.on("connection", socket => {
+    socket.on("join chat", chat => {
+      Chat.find({ id: new ObjectId(chat) })
+        .then(() => {
+          if (socket.chat) socket.leave(socket.chat);
+          socket.chat = chat;
+          socket.join(chat);
+        })
+        .catch(err => console.log(err));
+    });
 
-    if (socket.handshake.query.chat) {
-      const chatId = socket.handshake.query.chat;
-      const userId = socket.decoded.id;
-      Chat.find({ id: new ObjectId(chatId) })
-        .then(() => socket.join(chatId))
-				.catch(err => console.log(err));
-      socket.on("message", message => {
-        io.in(chatId).emit("message", {message, from: userId});
-      });
-      socket.on("disconnect", () => {
-        socket.leave(chatId);
-      });
-    }
+    socket.on("message", message => {
+      if (socket.chat) {
+        Chat.findOne({ _id: new ObjectId(socket.chat) })
+          .then(chat => {
+            const messageObject = new Message({
+              text: message,
+              user: new ObjectId(socket.decoded.id)
+            });
+
+            return Promise.all([chat, messageObject.save()]);
+          })
+          .then(([chat, messageObject]) => {
+            chat.messages.push(messageObject);
+            chat.save();
+            return messageObject.populate("user").execPopulate();
+          })
+          .then(messageObject => {
+            io.in(socket.chat).emit("message", messageObject);
+          })
+          .catch(err => console.log(err));
+      }
+    });
+
+    socket.on("disconnect", () => {
+      socket.leave(socket.chat);
+    });
   });
 };
 

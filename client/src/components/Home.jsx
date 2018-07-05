@@ -18,7 +18,7 @@ class Home extends Component {
       return (
         <div style={{ height: "93vh" }} className="d-flex flex-row">
           <ChatList list={this.props.chatList} activeChat={this.props.chat._id} displayChat={this.props.displayChat}/>
-          <Chat name={this.props.chat.name} messages={this.props.chat.messages}/>
+          <Chat name={this.props.chat.name} messages={this.props.chat.messages} sendMessage={this.props.sendMessage}/>
         </div>
       );
   }
