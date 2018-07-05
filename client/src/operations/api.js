@@ -11,6 +11,8 @@ import {
   getChatList as getChatListCreator
 } from "../actions/chatList";
 
+import { displayChat } from "../actions/chat";
+
 import { error, errorClear } from "../actions/error";
 export const authenticateToServer = (dispatch, email, password) => {
   dispatch(authenticate());
@@ -61,13 +63,12 @@ export const register = (dispatch, email, username, password) => {
 };
 
 export const getChatList = dispatch => {
-	dispatch(getChatListCreator());
-	const token = localStorage.getItem("serverToken")
+  dispatch(getChatListCreator());
+  const token = localStorage.getItem("serverToken");
   axios
-    .get(
-      "/chat",
-      { headers: { "Content-Type": "application/json", "x-access-token": token} }
-    )
+    .get("/chat", {
+      headers: { "Content-Type": "application/json", "x-access-token": token }
+    })
     .then(response => response.data)
     .then(chatList => {
       dispatch(errorClear());
@@ -76,4 +77,19 @@ export const getChatList = dispatch => {
     .catch(err => {
       console.log(err.response.data.message);
     });
+};
+
+export const getChat = (dispatch, chatId) => {
+  const token = localStorage.getItem("serverToken");
+  axios
+    .get(`/chat/${chatId}`, {
+      headers: { "Content-Type": "application/json", "x-access-token": token }
+    })
+    .then(response => response.data)
+    .then(chat => {
+      dispatch(errorClear());
+      dispatch(displayChat(chat));
+      return chat;
+    })
+    .catch(err => dispatch(error(err)));
 };

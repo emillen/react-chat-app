@@ -1,7 +1,7 @@
 import Home from "../components/Home";
 import { connect } from "react-redux";
 import { getChatList } from "../operations/api";
-
+import { getChat } from "../operations/api";
 const mapStoreToProps = store => ({
   isAuthenticated: store.auth.isAuthenticated,
   chat: store.chat,
@@ -9,8 +9,11 @@ const mapStoreToProps = store => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	getChatList() {
+  getChatList() {
     return getChatList(dispatch);
+  },
+  displayChat(chatId) {
+    return getChat(dispatch, chatId);
   }
 });
 

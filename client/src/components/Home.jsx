@@ -8,7 +8,8 @@ import ChatList from "../components/ChatList";
 class Home extends Component {
 
   componentDidMount() {
-    this.props.getChatList();
+		this.props.getChatList();
+		
   }
   render() {
     if (!this.props.isAuthenticated) {
@@ -16,15 +17,15 @@ class Home extends Component {
     } else
       return (
         <div style={{ height: "93vh" }} className="d-flex flex-row">
-          <ChatList list={this.props.chatList} activeChat={"asdasdasdasd"} />
-          <Chat />
+          <ChatList list={this.props.chatList} activeChat={this.props.chat._id} displayChat={this.props.displayChat}/>
+          <Chat name={this.props.chat.name} messages={this.props.chat.messages}/>
         </div>
       );
   }
 }
 
 Home.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired
+	isAuthenticated: PropTypes.bool.isRequired
 };
 
 export default Home;

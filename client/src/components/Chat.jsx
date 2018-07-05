@@ -30,43 +30,33 @@ const Message = ({ user, date, text }) => {
   );
 };
 
-const fakeMessages = [
-	
-  { user: "Mrcooldude", message: "Hahaha", date: new Date(), id: 10 },
-	{ user: "emil", message: "mhmmm!", date: new Date(), id: 5 },
-  { user: "Mrcooldude", message: "Hahaha", date: new Date(), id: 4 },
-  { user: "emil", message: "mhmmm!", date: new Date(), id: 6 },
-  { user: "emil", message: "blargh hahahah!", date: new Date(), id: 1 },
-  { user: "herdu", message: "Vad säger du?", date: new Date(), id: 2 },
-  {
-    user: "NiceGuy",
-    message: "Nej men nu får du sluta... Jag orkar inte",
-    date: new Date(),
-    id: 3
-  },
-  { user: "Mrcooldude", message: "Hahaha", date: new Date(), id: 9 },
-  { user: "emil", message: "mhmmm!", date: new Date(), id: 7 }
-];
-
-const Chat = () => {
+const Chat = ({ name, messages }) => {
   return (
     <div style={styles.container} className="bg-light p-2">
+      <h2 className="text-center border p-3 bg-white">{name}</h2>
       <div
         style={styles.messageArea}
         id="message-area "
         className="d-flex flex-column "
       >
-        {fakeMessages.map(msg => (
-          <Message
-            key={msg.id}
-            user={msg.user}
-            text={msg.message}
-            date={msg.date}
-          />
-        ))}
+        {messages &&
+          messages.map(msg => (
+            <Message
+              key={msg.id}
+              user={msg.user}
+              text={msg.message}
+              date={msg.date}
+            />
+          ))}
       </div>
       <div className="mt-2">
-        <textarea placeholder="Write your message here..." className="form-control border-primary" rows="3" style={{resize: "none"}} onSubmit={() => console.log("submitted")}/>
+        <textarea
+          placeholder="Write your message here..."
+          className="form-control border-primary"
+          rows="3"
+          style={{ resize: "none" }}
+          onSubmit={() => console.log("submitted")}
+        />
       </div>
     </div>
   );
