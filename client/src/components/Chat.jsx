@@ -2,14 +2,13 @@ import React, { Component } from "react";
 
 const styles = {
   container: {
-    display: "flex",
-		flexDirection: "column",
 		height: "100%",
 		maxHeight: "100%"
   },
   messageArea: {
     flexGrow: "1",
 		overflow: "auto",
+		height: "73vh",
 		maxHeight: "73vh"
   },
   input: {
@@ -22,9 +21,10 @@ const Message = ({ user, date, text }) => {
   return (
     <div
       style={{ minHeight: "min-content" }}
-      className="message card my-1 px-3 py-2"
+      className="message card my-1 px-3 pb-2 pt-3"
     >
       <h5>{user}:</h5>
+			<hr className="mt-0 pt-0" />
       <p style={{ whiteSpace: "pre-wrap"}}>{text}</p>
       <hr className="mt-0 pt-0" />
       <small>{date.toString()}</small>
@@ -59,8 +59,8 @@ class Chat extends Component {
   render() {
     if (!this.props.name)
       return (
-        <div style={styles.container} className="bg-light">
-          <h1 className="text-center mt-5">Choose a chat in the menu...</h1>
+        <div style={styles.container} className="bg-light p-5">
+          <h1 className="text-center">Choose a chat in the menu...</h1>
         </div>
       );
     else
@@ -85,7 +85,7 @@ class Chat extends Component {
           <div className="mt-2">
             <textarea
               placeholder="Write your message here..."
-              className="form-control border-primary"
+              className="form-control border-primary align-self-end"
               rows="3"
               style={{ resize: "none" }}
               onKeyDown={this.keyEventHandler}

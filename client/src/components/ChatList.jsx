@@ -35,12 +35,12 @@ class ChatList extends Component {
 
   render() {
     return (
-      <div className="border-right border-dark " style={{ height: "100%" }}>
+      <div className="border-right border-dark " style={{ height: "100%", maxHeight: "100%"}}>
         <ChatListMenu
           value={this.state.searchString}
           onChange={e => this.setState({ searchString: e.target.value })}
         />
-        <div style={{ overflowY: "scroll" }} className="list-group">
+        <div style={{maxHeight: "86vh" , overflowY: "auto" }} className="list-group">
           {this.props.list
             .filter(chat =>
               chat.name
