@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 const ChatListItem = ({ title, active, onclick }) => {
@@ -14,26 +14,51 @@ const ChatListItem = ({ title, active, onclick }) => {
     </a>
   );
 };
-const ChatList = ({ list, displayChat, activeChat }) => (
-  <div
-    style={{ width: "25vw", overflowY: "scroll" }}
-    className="border-right border-dark list-group"
-  >
-    {list.map(chat => (
-      <ChatListItem
-        key={chat._id}
-        title={chat.name}
-				active={chat._id === activeChat}
-				onclick={() => displayChat(chat._id)}
-      />
-    ))}
-  </div>
-);
+class ChatList extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { searchString: "" };
+  }
+
+  render() {
+    return (
+      <div className="border-right border-dark ">
+        <div className="p-2">
+          <input
+            placeholder={"Filter..."}
+            className="form-control mt-auto border border-primary"
+            onChange={e => this.setState({ searchString: e.target.value })}
+          />
+        </div>
+        <div
+          style={{ width: "25vw", overflowY: "scroll" }}
+          className="list-group"
+        >
+          {this.props.list
+            .filter(chat =>
+              chat.name
+                .toLowerCase()
+                .includes(this.state.searchString.toLowerCase())
+            )
+            .map(chat => (
+              <ChatListItem
+                key={chat._id}
+                title={chat.name}
+                active={chat._id === this.props.activeChat}
+                onclick={() => this.props.displayChat(chat._id)}
+              />
+            ))}
+        </div>
+      </div>
+    );
+  }
+}
 
 ChatList.propTypes = {
   list: PropTypes.array.isRequired,
   activeChat: PropTypes.string,
-  changeChat: PropTypes.func,
+  displayChat: PropTypes.func,
   getChatList: PropTypes.func
 };
 
