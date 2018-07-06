@@ -7,7 +7,7 @@ import Nav from "./containers/NavContainer";
 class App extends Component {
   render() {
     return (
-      <div className="App">
+      <div className="App" style={{maxHeight: "100vh"}}>
         <Nav />
         <Switch>
           <Route exact path="/register" component={RegisterForm} />

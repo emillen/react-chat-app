@@ -3,12 +3,14 @@ import React, { Component } from "react";
 const styles = {
   container: {
     display: "flex",
-    flexDirection: "column",
-    flexGrow: "1"
+		flexDirection: "column",
+		height: "100%",
+		maxHeight: "100%"
   },
   messageArea: {
     flexGrow: "1",
-    overflow: "auto"
+		overflow: "auto",
+		maxHeight: "73vh"
   },
   input: {
     flexGrow: "0",
@@ -23,7 +25,7 @@ const Message = ({ user, date, text }) => {
       className="message card my-1 px-3 py-2"
     >
       <h5>{user}:</h5>
-      <p style={{ whiteSpace: "pre-wrap" }}>{text}</p>
+      <p style={{ whiteSpace: "pre-wrap"}}>{text}</p>
       <hr className="mt-0 pt-0" />
       <small>{date.toString()}</small>
     </div>
