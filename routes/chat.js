@@ -24,7 +24,9 @@ router.post("/", (req, res) => {
       });
       return chat.save();
     })
-    .then(() => res.status(200).send({ added: true, message: "Chat added" })) //response to client
+    .then(chat =>
+      res.status(200).send({ added: true, message: "Chat added", chat: chat })
+    ) //response to client
     .catch(err => {
       res.status(500).send({ err: true, message: "Chat already exists" });
     });
