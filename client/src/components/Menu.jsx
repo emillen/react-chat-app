@@ -1,18 +1,23 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router";
-
-const CreateChat = ({ onSubmit }) => {
+import { Redirect } from "react-router-dom";
+import { withRouter } from "react-router-dom";
+const CreateChat = withRouter(({ onSubmit, history }) => {
   return (
     <form
       className="card p-5"
       onSubmit={e => {
         e.preventDefault();
-        onSubmit(e.target.elements["name"].value);
+        onSubmit(e.target.elements["name"].value)
+          .then(() => {
+            console.log("fungerar det här?");
+            history.push("/");
+          })
+          .catch();
       }}
     >
       <div className="form-group">
         <input
-					name="name"
+          name="name"
           type="text"
           className="form-control"
           placeholder="Enter the name of the new chat..."
@@ -24,7 +29,7 @@ const CreateChat = ({ onSubmit }) => {
       </button>
     </form>
   );
-};
+});
 
 class Menu extends Component {
   constructor(props) {
@@ -74,6 +79,12 @@ class Menu extends Component {
 
           {this.state.active === "create-chat" && (
             <CreateChat onSubmit={this.props.addChat} />
+          )}
+
+          {this.props.error && (
+            <div className="alert alert-warning mt-5 text-center" role="alert">
+              {this.props.error}
+            </div>
           )}
         </div>
       );

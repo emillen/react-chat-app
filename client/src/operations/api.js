@@ -1,6 +1,7 @@
 import axios from "axios";
 import moment from "moment";
 import jwtDecode from "jwt-decode";
+import Promise from "bluebird";
 import { authenticate, authenticationSuccess, logout } from "../actions/auth";
 import {
   register as registerAction,
@@ -8,7 +9,8 @@ import {
 } from "../actions/register";
 import {
   getChatListSuccess,
-  getChatList as getChatListCreator
+  getChatList as getChatListCreator,
+  newChat
 } from "../actions/chatList";
 
 import { displayChat } from "../actions/chat";
@@ -91,14 +93,37 @@ export const getChat = (dispatch, chatId) => {
     })
     .then(response => response.data)
     .then(chat => {
-			socket.emit("join chat", chat._id);
+      socket.emit("join chat", chat._id);
       dispatch(errorClear());
       dispatch(displayChat(chat));
       return chat;
     })
-    .catch(err => dispatch(error(err)));
+    .catch(err => dispatch(error(err.response.data.message)));
 };
 
 export const sendMessage = message => {
   socket.emit("message", message);
+};
+
+export const addChat = (dispatch, chatName) => {
+  const token = localStorage.getItem("serverToken");
+  return axios
+    .post(
+      `/chat`,
+      { name: chatName },
+      {
+        headers: { "Content-Type": "application/json", "x-access-token": token }
+      }
+    )
+    .then(chat => chat.data)
+    .then(chat => {
+      dispatch(errorClear());
+      dispatch(newChat(chat.chat));
+      return true;
+    })
+    .catch(err => {
+      console.log("hehe");
+      dispatch(error(err.response.data.message));
+      return Promise.reject(err.response.data);
+    });
 };
