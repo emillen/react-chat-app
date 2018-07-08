@@ -9,7 +9,6 @@ const CreateChat = withRouter(({ onSubmit, history }) => {
         e.preventDefault();
         onSubmit(e.target.elements["name"].value)
           .then(() => {
-            console.log("fungerar det här?");
             history.push("/");
           })
           .catch();
@@ -24,8 +23,7 @@ const CreateChat = withRouter(({ onSubmit, history }) => {
         />
       </div>
       <button type="submit" className="btn btn-default btn-dark float-rigth">
-        {" "}
-        Create chat{" "}
+        Create chat
       </button>
     </form>
   );

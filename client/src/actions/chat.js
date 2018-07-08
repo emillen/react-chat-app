@@ -8,12 +8,11 @@ export const sendMessage = message => {
 };
 
 export const displayChat = chat => {
-	return {
-		type: DISPLAY_CHAT,
-		chat
-	}
-}
- 
+  return {
+    type: DISPLAY_CHAT,
+    chat
+  };
+};
 
 export const recieveMessage = message => {
   return {
