@@ -1,7 +1,10 @@
 import jwt from "jsonwebtoken";
 import Promise from "bluebird";
+import User from "../models/User";
+import mongoose from "mongoose";
 
 const verify = Promise.promisify(jwt.verify);
+const ObjectId = mongoose.Types.ObjectId;
 
 export const authenticationMiddleware = (req, res, next) => {
   const token = req.headers["x-access-token"];
@@ -9,11 +12,12 @@ export const authenticationMiddleware = (req, res, next) => {
     return res.status(401).send({ auth: false, message: "No token provided." });
 
   verify(token, "asdasd")
+    .then(decoded => User.findOne({ _id: new ObjectId(decoded.id) }))
     .then(() => next())
-    .catch(err =>
+    .catch(error =>
       res
         .status(500)
-        .send({ auth: false, message: "Failed to authenticate token." })
+        .send({ auth: false, message: "Failed to authenticate token.", error })
     );
 };
 
