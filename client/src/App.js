@@ -8,14 +8,19 @@ import Nav from "./containers/NavContainer";
 class App extends Component {
   render() {
     return (
-      <div className="App" style={{ maxHeight: "100vh" }}>
+      <div
+        className="App d-flex flex-column"
+        style={{ height: "100vh", maxHeight: "100vh", overflow: "hidden", flexBasis: "100vh" }}
+      >
         <Nav />
-        <Switch>
-          <Route exact path="/register" component={RegisterForm} />
-          <Route exact path="/login" component={LoginPage} />
-          <Route exact path="/" component={HomePage} />
-          <Route exact path="/menu" component={MenuPage} />
-        </Switch>
+        <div style={{ flex: 1, minHeight: 0 }}>
+          <Switch>
+            <Route exact path="/register" component={RegisterForm} />
+            <Route exact path="/login" component={LoginPage} />
+            <Route exact path="/" component={HomePage} />
+            <Route exact path="/menu" component={MenuPage} />
+          </Switch>
+        </div>
       </div>
     );
   }

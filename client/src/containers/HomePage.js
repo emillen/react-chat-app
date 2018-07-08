@@ -13,8 +13,8 @@ const mapDispatchToProps = dispatch => ({
   },
   displayChat(chatId) {
     return getChat(dispatch, chatId);
-	},
-	sendMessage
+  },
+  sendMessage
 });
 
 export default connect(
