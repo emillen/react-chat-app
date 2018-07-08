@@ -28,7 +28,7 @@ const Message = ({ user, date, text }) => {
 
 const ChatHeader = ({ name, onBackbuttonClick }) => {
   return (
-    <div style={{flexShrink: 0}} className="text-center border p-3 bg-white d-flex ">
+    <div style={{flexShrink: 0}} className="text-center border-bottom border-dark p-3 bg-white d-flex ">
       <div style={{ flex: 1 }}>
         <button onClick={onBackbuttonClick} className="btn btn-dark float-left d-lg-none d-inline">
           &lt;
@@ -78,13 +78,13 @@ class Chat extends Component {
       return (
         <div
           style={styles.container}
-          className="bg-light px-2 pb-2 d-flex flex-column"
+          className="bg-light d-flex flex-column"
         >
           <ChatHeader
             name={this.props.name}
             onBackbuttonClick={this.props.onBackbuttonClick}
           />
-          <div style={styles.messageArea} id="message-area" className="">
+          <div style={styles.messageArea} id="message-area" className="px-2 pb-2">
             {this.props.messages &&
               this.props.messages.map(msg => (
                 <Message
@@ -95,7 +95,7 @@ class Chat extends Component {
                 />
               ))}
           </div>
-          <div className="mt-2 align-self-end" style={{ width: "100%" }}>
+          <div className="mt-2 align-self-end px-2 pb-2" style={{ width: "100%" }}>
             <textarea
               placeholder="Write your message here..."
               className="form-control border-primary "

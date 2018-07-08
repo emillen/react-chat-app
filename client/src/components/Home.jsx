@@ -25,10 +25,7 @@ class Home extends Component {
       return <Redirect to="/login" />;
     } else
       return (
-        <div
-          style={{ height: "100%", width: "100%" }}
-          className="row p-0 m-0"
-        >
+        <div style={{ height: "100%", width: "100%" }} className="row p-0 m-0">
           <div
             id="chatlist"
             style={{ height: "100%", width: "100%" }}
