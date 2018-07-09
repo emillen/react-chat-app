@@ -19,7 +19,7 @@ class LoginForm extends Component {
     else
       return (
         <div className="container">
-          <div className="card p-5 m-5">
+          <div className="card p-5 mx-5 mt-5">
             <h2 className="mb-4 text-center">Login</h2>
             <form onSubmit={this.submit}>
               <div className="form-group row ">
@@ -65,9 +65,9 @@ class LoginForm extends Component {
                 Login
               </button>
             </form>
-            <div className="text-right mt-5">
+            <div className="text-right mt-3">
               <a href="/register" className="text-primary text-right">
-                Register..
+                Register here
               </a>
             </div>
             {this.props.error && (

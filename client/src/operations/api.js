@@ -96,7 +96,6 @@ export const getChat = (dispatch, chatId) => {
 };
 
 export const sendMessage = (dispatch, message, chatId) => {
-	console.log('hejsan')
   const token = localStorage.getItem("serverToken");
   axios
     .post(
@@ -108,7 +107,6 @@ export const sendMessage = (dispatch, message, chatId) => {
     )
     .then()
     .catch(err => {
-      console.log(err);
       errorOrLogout(dispatch, err);
     });
 };
@@ -139,7 +137,6 @@ const errorOrLogout = (dispatch, err) => {
   if (err.response.status === 401) {
     return logoutFromServer(dispatch);
   } else {
-    console.dir(err.response);
     dispatch(error(err.response.message));
   }
 };

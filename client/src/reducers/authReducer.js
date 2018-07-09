@@ -11,14 +11,12 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case AUTHENTICATE: {
-      console.log("nu kör vi");
       return Object.assign(
         {},
         { isInProgress: true, isAuthenticated: false }
       );
     }
     case AUTHENTICATION_SUCCESS: {
-      console.log("nu är vi klara");
       return Object.assign(
         {},
         { isInProgress: false, isAuthenticated: true }
