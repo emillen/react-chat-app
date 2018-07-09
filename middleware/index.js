@@ -12,11 +12,17 @@ export const authenticationMiddleware = (req, res, next) => {
     return res.status(401).send({ auth: false, message: "No token provided." });
 
   verify(token, "asdasd")
-    .then(decoded => User.findOne({ _id: new ObjectId(decoded.id) }))
+    .then(decoded =>{ req.decoded = decoded; User.findOne({ _id: new ObjectId(decoded.id) })})
+    .then(user => {
+      if (user === null) return Promise.reject();
+      else {
+				return user
+			};
+    })
     .then(() => next())
     .catch(error =>
       res
-        .status(500)
+        .status(401)
         .send({ auth: false, message: "Failed to authenticate token.", error })
     );
 };
