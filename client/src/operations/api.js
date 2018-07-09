@@ -134,9 +134,10 @@ export const addChat = (dispatch, chatName) => {
 };
 
 const errorOrLogout = (dispatch, err) => {
-  if (err.response.status === 401) {
+	console.dir(err);
+  if (err.reponse && err.response.status === 401) {
     return logoutFromServer(dispatch);
   } else {
-    dispatch(error(err.response.message));
+    dispatch(error((err.response.data && err.response.data.message)|| err.message || err.response.statusText));
   }
 };
