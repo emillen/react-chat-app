@@ -3,7 +3,7 @@ import React, { Component } from "react";
 const styles = {
   container: {
     height: "100%",
-    maxHeight: "100%",
+    maxHeight: "100%"
   },
   messageArea: {
     flexGrow: "2",
@@ -28,9 +28,15 @@ const Message = ({ user, date, text }) => {
 
 const ChatHeader = ({ name, onBackbuttonClick }) => {
   return (
-    <div style={{flexShrink: 0}} className="text-center border-bottom border-dark p-3 bg-white d-flex ">
+    <div
+      style={{ flexShrink: 0 }}
+      className="text-center border-bottom border-dark p-3 bg-white d-flex "
+    >
       <div style={{ flex: 1 }}>
-        <button onClick={onBackbuttonClick} className="btn btn-dark float-left d-lg-none d-inline">
+        <button
+          onClick={onBackbuttonClick}
+          className="btn btn-dark float-left d-lg-none d-inline"
+        >
           &lt;
         </button>
       </div>
@@ -54,7 +60,7 @@ class Chat extends Component {
 
     if (e.type === "keyup" && e.keyCode === 13 && !this.state[16]) {
       e.preventDefault();
-      this.props.sendMessage(e.target.value.trim(),this.props.chat._id);
+      this.props.sendMessage(e.target.value.trim(), this.props.chat._id);
       e.target.value = "";
     }
   }
@@ -76,26 +82,36 @@ class Chat extends Component {
       );
     else
       return (
-        <div
-          style={styles.container}
-          className="bg-light d-flex flex-column"
-        >
+        <div style={styles.container} className="bg-light d-flex flex-column">
           <ChatHeader
             name={this.props.chat.name}
             onBackbuttonClick={this.props.onBackbuttonClick}
           />
-          <div style={styles.messageArea} id="message-area" className="px-2 pb-2">
+          <div
+            style={styles.messageArea}
+            id="message-area"
+            className="px-2 pb-2"
+          >
             {this.props.chat.messages &&
-              this.props.chat.messages.map(msg => (
-                <Message
-                  key={msg._id}
-                  user={msg.user.username}
-                  text={msg.text}
-                  date={msg.createdAt}
-                />
-              ))}
+              this.props.chat.messages
+                .sort((a, b) => {
+                  if (b.createdAt > a.createdAt) return -1;
+                  if (a.createdAt > b.createdAt) return 1;
+                  return 0;
+                })
+                .map(msg => (
+                  <Message
+                    key={msg._id}
+                    user={msg.user.username}
+                    text={msg.text}
+                    date={msg.createdAt}
+                  />
+                ))}
           </div>
-          <div className="mt-2 align-self-end px-2 pb-2" style={{ width: "100%" }}>
+          <div
+            className="mt-2 align-self-end px-2 pb-2"
+            style={{ width: "100%" }}
+          >
             <textarea
               placeholder="Write your message here..."
               className="form-control border-primary "
