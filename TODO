@@ -1,14 +1,14 @@
 Features: 
 	☐ list/search chats @started(18-07-03 23:59)
-	☐ chat feature autoupdate -> socketIo
 	☐ search for users
 	☐ join chats / only show chats that are subscribed by the user. 
 	
 client: 
 	☐ enable users to see which chats has been updated with socketio 
-	☐ create chats
 
 Archive:
+  ✔ create chats @done(18-07-09 09:51) @project(client)
+  ✔ chat feature autoupdate -> socketIo @done(18-07-09 09:51) @project(Features)
   ✔ register on client @done(18-07-05 19:33) @project(Features)
   ✔ auto update chats with socketIo @done(18-07-05 19:32) @project(client)
   ✔ list chats @started(18-07-03 23:58) @done(18-07-05 19:32) @lasted(1d19h34m44s) @project(client)
