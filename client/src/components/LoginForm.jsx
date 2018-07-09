@@ -56,6 +56,7 @@ class LoginForm extends Component {
                   />
                 </div>
               </div>
+
               <button
                 onClick={this.submit}
                 type="submit"
@@ -64,7 +65,11 @@ class LoginForm extends Component {
                 Login
               </button>
             </form>
-
+            <div className="text-right mt-5">
+              <a href="/register" className="text-primary text-right">
+                Register..
+              </a>
+            </div>
             {this.props.error && (
               <div className="alert alert-warning mt-5" role="alert">
                 {this.props.error}
