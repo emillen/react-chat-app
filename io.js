@@ -3,14 +3,13 @@ import Promise from "bluebird";
 import jwtModule from "jsonwebtoken";
 import Chat from "./models/Chat";
 import User from "./models/User";
-import Message from "./models/Message";
 import mongoose from "mongoose";
 
 const ObjectId = mongoose.Types.ObjectId;
 const verify = Promise.promisify(jwtModule.verify);
-
+export let io = {};
 const setupIo = http => {
-  const io = ioModule(http);
+  io = ioModule(http, {'pingInterval': 2000, 'pingTimeout': 5000});
 
   io.use((socket, next) => {
     if (socket.handshake.query && socket.handshake.query.token) {
@@ -31,36 +30,14 @@ const setupIo = http => {
   });
   io.on("connection", socket => {
     socket.on("join chat", chat => {
-      Chat.find({ id: new ObjectId(chat) })
-        .then(() => {
-          if (socket.chat) socket.leave(socket.chat);
-          socket.chat = chat;
-          socket.join(chat);
-        })
-        .catch(err => console.log(err));
-    });
-
-    socket.on("message", message => {
-      if (socket.chat) {
-        Chat.findOne({ _id: new ObjectId(socket.chat) })
-          .then(chat => {
-            const messageObject = new Message({
-              text: message,
-              user: new ObjectId(socket.decoded.id)
-            });
-
-            return Promise.all([chat, messageObject.save()]);
-          })
-          .then(([chat, messageObject]) => {
-            chat.messages.push(messageObject);
-            chat.save();
-            return messageObject.populate("user").execPopulate();
-          })
-          .then(messageObject => {
-            io.in(socket.chat).emit("message", messageObject);
+      if (chat && chat.length >= 10)
+        Chat.find({ id: new ObjectId(chat) })
+          .then(() => {
+            if (socket.chat) socket.leave(socket.chat);
+            socket.chat = chat;
+            socket.join(chat);
           })
           .catch(err => console.log(err));
-      }
     });
 
     socket.on("disconnect", () => {
@@ -68,5 +45,4 @@ const setupIo = http => {
     });
   });
 };
-
 export default setupIo;

@@ -4,6 +4,7 @@ import { PropTypes } from "prop-types";
 
 import Chat from "./Chat";
 import ChatList from "../components/ChatList";
+import Socket from "./Socket";
 
 class Home extends Component {
   constructor(props) {
@@ -26,6 +27,10 @@ class Home extends Component {
     } else
       return (
         <div style={{ height: "100%", width: "100%" }} className="row p-0 m-0">
+          <Socket
+            chatId={this.props.chat._id}
+            recieveMessage={this.props.recieveMessage}
+          />
           <div
             id="chatlist"
             style={{ height: "100%", width: "100%" }}
@@ -49,8 +54,7 @@ class Home extends Component {
             }`}
           >
             <Chat
-              name={this.props.chat.name}
-              messages={this.props.chat.messages}
+							chat={this.props.chat}
               sendMessage={this.props.sendMessage}
               onBackbuttonClick={() => {
                 this.setState({ active: "chatlist" });

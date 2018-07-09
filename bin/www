@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import app from "../app";
-import io from "../io";
+import setupIo from "../io";
 import debugPackage from "debug";
 import http from "http";
 
@@ -79,7 +79,7 @@ const server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-io(server);
+setupIo(server);
 server.listen(port);
 server.on("error", onError);
 server.on("listening", onListening);

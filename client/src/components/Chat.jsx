@@ -54,7 +54,7 @@ class Chat extends Component {
 
     if (e.type === "keyup" && e.keyCode === 13 && !this.state[16]) {
       e.preventDefault();
-      this.props.sendMessage(e.target.value.trim());
+      this.props.sendMessage(e.target.value.trim(),this.props.chat._id);
       e.target.value = "";
     }
   }
@@ -67,7 +67,7 @@ class Chat extends Component {
   }
 
   render() {
-    if (!this.props.name)
+    if (!this.props.chat.name)
       return (
         <ChatHeader
           name="choose a chat in the menu"
@@ -81,12 +81,12 @@ class Chat extends Component {
           className="bg-light d-flex flex-column"
         >
           <ChatHeader
-            name={this.props.name}
+            name={this.props.chat.name}
             onBackbuttonClick={this.props.onBackbuttonClick}
           />
           <div style={styles.messageArea} id="message-area" className="px-2 pb-2">
-            {this.props.messages &&
-              this.props.messages.map(msg => (
+            {this.props.chat.messages &&
+              this.props.chat.messages.map(msg => (
                 <Message
                   key={msg._id}
                   user={msg.user.username}

@@ -5,6 +5,8 @@ import jwt from "jsonwebtoken";
 
 import User from "../models/User";
 import Chat from "../models/Chat";
+import Message from "../models/Message"
+import {io} from "../io"
 
 const verify = Promise.promisify(jwt.verify);
 const router = express.Router();
@@ -49,11 +51,32 @@ router.get("/:id", (req, res) => {
     })
     .exec()
     .then(chat => {
-      console.log(chat);
       res.status(200).send(chat);
     })
     .catch(err =>
       res.status(500).send({ error: true, message: "Unknown server error" })
     );
+});
+
+router.post("/:id", (req, res) => {
+	if (req.params.id && req.params.id.length >= 10 && req.body.message)
+    Chat.findOne({ _id: new ObjectId(req.params.id) })
+      .then(chat => {
+        const messageObject = new Message({
+          text: req.body.message,
+          user: new ObjectId(req.decoded.id)
+        });
+
+        return Promise.all([chat, messageObject.save()]);
+      })
+      .then(([chat, messageObject]) => {
+        chat.messages.push(messageObject);
+        chat.save();
+        return messageObject.populate("user").execPopulate();
+      })
+      .then(messageObject => {
+        io.in(req.params.id).emit("message", messageObject);
+      })
+      .catch(err => console.log(err));
 });
 export default router;

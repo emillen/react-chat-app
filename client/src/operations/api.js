@@ -16,10 +16,6 @@ import {
 import { displayChat } from "../actions/chat";
 import { error, errorClear } from "../actions/error";
 
-import { startSocket } from "./socket";
-
-const socket = startSocket();
-
 export const authenticateToServer = (dispatch, email, password) => {
   dispatch(authenticate());
   axios
@@ -40,7 +36,7 @@ export const authenticateToServer = (dispatch, email, password) => {
       dispatch(authenticationSuccess());
     })
     .catch(err => {
-      dispatch(error(err.response.data.message));
+      errorOrLogout(dispatch, err);
     });
 };
 
@@ -63,8 +59,7 @@ export const register = (dispatch, email, username, password) => {
       dispatch(registerSuccess());
     })
     .catch(err => {
-      console.log(err);
-      dispatch(error(err.response.data.message));
+      errorOrLogout(dispatch, err);
     });
 };
 
@@ -81,7 +76,7 @@ export const getChatList = dispatch => {
       dispatch(getChatListSuccess(chatList));
     })
     .catch(err => {
-      console.log(err.response.data.message);
+      errorOrLogout(dispatch, err);
     });
 };
 
@@ -93,16 +88,29 @@ export const getChat = (dispatch, chatId) => {
     })
     .then(response => response.data)
     .then(chat => {
-      socket.emit("join chat", chat._id);
       dispatch(errorClear());
       dispatch(displayChat(chat));
       return chat;
     })
-    .catch(err => dispatch(error(err.response.data.message)));
+    .catch(err => errorOrLogout(dispatch, err));
 };
 
-export const sendMessage = message => {
-  socket.emit("message", message);
+export const sendMessage = (dispatch, message, chatId) => {
+	console.log('hejsan')
+  const token = localStorage.getItem("serverToken");
+  axios
+    .post(
+      `/chat/${chatId}`,
+      { message },
+      {
+        headers: { "Content-Type": "application/json", "x-access-token": token }
+      }
+    )
+    .then()
+    .catch(err => {
+      console.log(err);
+      errorOrLogout(dispatch, err);
+    });
 };
 
 export const addChat = (dispatch, chatName) => {
@@ -122,8 +130,16 @@ export const addChat = (dispatch, chatName) => {
       return true;
     })
     .catch(err => {
-      console.log("hehe");
-      dispatch(error(err.response.data.message));
+      errorOrLogout(dispatch, err);
       return Promise.reject(err.response.data);
     });
+};
+
+const errorOrLogout = (dispatch, err) => {
+  if (err.response.status === 401) {
+    return logoutFromServer(dispatch);
+  } else {
+    console.dir(err.response);
+    dispatch(error(err.response.message));
+  }
 };
