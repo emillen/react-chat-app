@@ -67,7 +67,12 @@ class Home extends Component {
 }
 
 Home.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired
+	isAuthenticated: PropTypes.bool.isRequired,
+	chat: PropTypes.object.isRequired,
+	chatList: PropTypes.array.isRequired,
+	getChatList: PropTypes.func.isRequired,
+	sendMessage: PropTypes.func.isRequired,
+	recieveMessage: PropTypes.func.isRequired
 };
 
 export default Home;

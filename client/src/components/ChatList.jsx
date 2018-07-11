@@ -4,12 +4,12 @@ const ChatListItem = ({ title, active, onclick }) => {
   return (
     <a
       className={
-        "list-group-item list-group-item-action" +
+        "list-group-item list-group-item-action font-weight-bold" +
         (active ? " bg-dark text-light" : "")
       }
       onClick={onclick}
     >
-      <h5>{title}</h5>
+      {title}
     </a>
   );
 };
@@ -42,7 +42,7 @@ class ChatList extends Component {
     return (
       <div
         className="border-right border-dark "
-        style={{ height: "100%", maxHeight: "100%"}}
+        style={{ height: "100%", maxHeight: "100%" }}
       >
         <ChatListMenu
           value={this.state.searchString}

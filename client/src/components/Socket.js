@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import { Component } from "react";
+import PropTypes from 'prop-types';
 import io from "socket.io-client";
 
 class Socket extends Component {
@@ -22,26 +23,27 @@ class Socket extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    if (nextProps.chatId === this.props.chatId && this.state.socket.connected)
-      return false;
-    else return true;
+		console.log(this.state.socket.connected)
+    if (nextProps.chatId !== this.props.chatId || !this.state.socket.connected)
+      return true;
+    else return false;
   }
 
   componentDidMount() {
     this.connect();
-    this.state.socket.on("message", message => {
-      this.props.recieveMessage(message);
-    });
+  }
+
+  componentDidUpdate() {
+    this.joinChannel(this.state.socket);
   }
 
   connect() {
     if (!this.state.socket.connected) {
       this.state.socket.connect("/");
+      this.state.socket.on("message", message => {
+        this.props.recieveMessage(message);
+      });
     }
-  }
-
-  componentDidUpdate() {
-    this.joinChannel(this.state.socket);
   }
 
   joinChannel(socket) {
@@ -51,8 +53,12 @@ class Socket extends Component {
   }
 
   render() {
-    return <div />;
+    return null;
   }
+}
+
+Socket.propTypes= {
+	chatId: PropTypes.string
 }
 
 export default Socket;

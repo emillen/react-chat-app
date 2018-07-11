@@ -24,7 +24,7 @@ router.post("/", (req, res) => {
       ]);
     })
     .then(([user, _]) => {
-      // using poop token just for testing
+      // using poop "secret" just for testing
       let token = jwt.sign({ id: user._id }, "asdasd", {
         expiresIn: 20 * 60 * 24 // expires in 24 hours
       });

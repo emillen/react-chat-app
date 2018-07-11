@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import PropTypes from "prop-types";
 const styles = {
   container: {
     height: "100%",
@@ -125,5 +125,11 @@ class Chat extends Component {
       );
   }
 }
+
+Chat.propTypes = {
+  sendMessage: PropTypes.func.isRequired,
+  onBackbuttonClick: PropTypes.func.isRequired,
+  chat: PropTypes.object.isRequired
+};
 
 export default Chat;

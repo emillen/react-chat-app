@@ -10,7 +10,7 @@ class App extends Component {
     return (
       <div
         className="App d-flex flex-column"
-        style={{ height: "100vh", maxHeight: "100vh", overflow: "hidden", flexBasis: "100vh" }}
+        style={{ height: "100vh", maxHeight: "100vh", overflow: "hidden" }}
       >
         <Nav />
         <div style={{ flex: 1, minHeight: 0 }}>

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import { withRouter } from "react-router-dom";
+import PropTypes from 'prop-types';
 const CreateChat = withRouter(({ onSubmit, history }) => {
   return (
     <form
@@ -88,6 +89,11 @@ class Menu extends Component {
       );
     }
   }
+}
+
+Menu.propTypes = {
+	isAuthenticated: PropTypes.bool.isRequired,
+	error: PropTypes.string
 }
 
 export default Menu;

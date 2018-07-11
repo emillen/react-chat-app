@@ -122,7 +122,9 @@ class RegisterForm extends Component {
 }
 
 RegisterForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired
+	onSubmit: PropTypes.func.isRequired,
+	error: PropTypes.string,
+	succes: PropTypes.string
 };
 
 export default RegisterForm;
