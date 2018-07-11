@@ -11,18 +11,21 @@ router.post("/", (req, res) => {
   User.findOne({ email: req.body.email })
     .then(user => {
       if (!user) return Promise.reject("User does not exist");
-
+      console.log(user);
       return Promise.all([
         user,
         bcrypt
           .compare(req.body.password, user.passwordHash)
-          .catch(() => Promise.reject("Password does not match"))
+          .then(bResponse => {
+						if(bResponse === false)
+							return Promise.reject("Password does not match")
+						return bResponse
+					})
       ]);
     })
-    .then(promises => {
-      let user = promises[0];
+    .then(([user, _]) => {
+      // using poop token just for testing
       let token = jwt.sign({ id: user._id }, "asdasd", {
-        // using poop code
         expiresIn: 20 * 60 * 24 // expires in 24 hours
       });
       return res.status(200).send({ auth: true, token: token });
