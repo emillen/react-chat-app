@@ -15,17 +15,17 @@ const ChatListItem = ({ title, active, onclick }) => {
 };
 
 const ChatListMenu = ({ onChange, value }) => (
-  <div className="p-2 d-flex">
+  <div className="p-2 d-flex bg-light">
     <div style={{ flexGrow: 2 }}>
       <input
         placeholder={"Filter..."}
-        className="form-control border border-primary"
+        className="form-control border border-primary bg-white"
         onChange={onChange}
         value={value}
       />
     </div>
     <div className="ml-2">
-      <a href="/menu" className="btn btn-primary text-dark bg-white">
+      <a href="/menu" className="btn btn-white text-dark border-dark ">
         +
       </a>
     </div>

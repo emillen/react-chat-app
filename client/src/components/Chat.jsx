@@ -30,12 +30,12 @@ const ChatHeader = ({ name, onBackbuttonClick }) => {
   return (
     <div
       style={{ flexShrink: 0 }}
-      className="text-center border-bottom border-dark p-3 bg-white d-flex "
+      className="text-center border-bottom border-dark p-3 bg-white d-flex align-items-center"
     >
       <div style={{ flex: 1 }}>
         <button
           onClick={onBackbuttonClick}
-          className="btn btn-dark float-left d-lg-none d-inline"
+          className="btn btn-dark float-left d-lg-none d-inline "
         >
           &lt;
         </button>
@@ -109,12 +109,12 @@ class Chat extends Component {
                 ))}
           </div>
           <div
-            className="mt-2 align-self-end px-2 pb-2"
+            className="mt-2 align-self-end p-2 border-top border-dark bg-white"
             style={{ width: "100%" }}
           >
             <textarea
               placeholder="Write your message here..."
-              className="form-control border-primary "
+              className="form-control border-primary bg-light"
               rows="3"
               style={{ resize: "none" }}
               onKeyDown={this.keyEventHandler}

@@ -34,9 +34,9 @@ class Home extends Component {
           <div
             id="chatlist"
             style={{ height: "100%", width: "100%" }}
-            className={`col-lg-3 p-0 m-0  d-lg-block ${
+            className={`col-lg-3 p-0 m-0  ${
               this.state.active === "chatlist" ? "" : "d-none"
-            }`}
+            } d-lg-block`}
           >
             <ChatList
               list={this.props.chatList}
@@ -51,10 +51,10 @@ class Home extends Component {
             style={{ height: "100%", width: "100%" }}
             className={`col-lg-9 p-0 m-0 ${
               this.state.active === "chat" ? "" : "d-none"
-            }`}
+            } d-lg-block`}
           >
             <Chat
-							chat={this.props.chat}
+              chat={this.props.chat}
               sendMessage={this.props.sendMessage}
               onBackbuttonClick={() => {
                 this.setState({ active: "chatlist" });
@@ -67,12 +67,12 @@ class Home extends Component {
 }
 
 Home.propTypes = {
-	isAuthenticated: PropTypes.bool.isRequired,
-	chat: PropTypes.object.isRequired,
-	chatList: PropTypes.array.isRequired,
-	getChatList: PropTypes.func.isRequired,
-	sendMessage: PropTypes.func.isRequired,
-	recieveMessage: PropTypes.func.isRequired
+  isAuthenticated: PropTypes.bool.isRequired,
+  chat: PropTypes.object.isRequired,
+  chatList: PropTypes.array.isRequired,
+  getChatList: PropTypes.func.isRequired,
+  sendMessage: PropTypes.func.isRequired,
+  recieveMessage: PropTypes.func.isRequired
 };
 
 export default Home;
