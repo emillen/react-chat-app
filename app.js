@@ -19,7 +19,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/authentication", authRouter);
 app.use(authenticationMiddleware);
-app.use("/chat", chatRouter);
+app.use("/chats", chatRouter);
 app.use("/me", meRouter);
 app.use(invalidUrlMiddleware);
 export default app;

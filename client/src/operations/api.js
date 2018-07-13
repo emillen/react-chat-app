@@ -64,7 +64,7 @@ export const register = (dispatch, email, username, password) => {
 };
 
 export const getChatList =( dispatch, baseUrl )=> {
-	const url = baseUrl || "/chat";
+	const url = baseUrl || "/chats";
   dispatch(getChatListCreator());
   const token = localStorage.getItem("serverToken");
   axios
@@ -89,7 +89,7 @@ export const getChat = (dispatch, chatId) => {
   
   const token = localStorage.getItem("serverToken");
   axios
-    .get(`/chat/${chatId}`, {
+    .get(`/chats/${chatId}`, {
       headers: { "Content-Type": "application/json", "x-access-token": token }
     })
     .then(response => response.data)
@@ -105,7 +105,7 @@ export const sendMessage = (dispatch, message, chatId) => {
   const token = localStorage.getItem("serverToken");
   axios
     .post(
-      `/chat/${chatId}`,
+      `/chats/${chatId}`,
       { message },
       {
         headers: { "Content-Type": "application/json", "x-access-token": token }
@@ -121,7 +121,7 @@ export const addChat = (dispatch, chatName) => {
   const token = localStorage.getItem("serverToken");
   return axios
     .post(
-      `/chat`,
+      `/chats`,
       { name: chatName },
       {
         headers: { "Content-Type": "application/json", "x-access-token": token }
