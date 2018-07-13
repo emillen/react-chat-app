@@ -63,11 +63,12 @@ export const register = (dispatch, email, username, password) => {
     });
 };
 
-export const getChatList = dispatch => {
+export const getChatList =( dispatch, baseUrl )=> {
+	const url = baseUrl || "/chat";
   dispatch(getChatListCreator());
   const token = localStorage.getItem("serverToken");
   axios
-    .get("/chat", {
+    .get(url, {
       headers: { "Content-Type": "application/json", "x-access-token": token }
     })
     .then(response => response.data)
@@ -80,7 +81,12 @@ export const getChatList = dispatch => {
     });
 };
 
+export const getMyChatList = (dispatch) => {
+  getChatList(dispatch, "/me/chats");
+};
+
 export const getChat = (dispatch, chatId) => {
+  
   const token = localStorage.getItem("serverToken");
   axios
     .get(`/chat/${chatId}`, {
@@ -134,10 +140,16 @@ export const addChat = (dispatch, chatName) => {
 };
 
 const errorOrLogout = (dispatch, err) => {
-	console.dir(err);
+  console.dir(err);
   if (err.reponse && err.response.status === 401) {
     return logoutFromServer(dispatch);
   } else {
-    dispatch(error((err.response.data && err.response.data.message)|| err.message || err.response.statusText));
+    dispatch(
+      error(
+        (err.response.data && err.response.data.message) ||
+          err.message ||
+          err.response.statusText
+      )
+    );
   }
 };

@@ -8,6 +8,7 @@ const router = express.Router();
 const bcrypt = Promise.promisifyAll(bcryptModule);
 
 router.post("/", (req, res) => {
+	console.log('heheh')
   User.findOne({ email: req.body.email })
     .then(user => {
       if (!user) return Promise.reject("User does not exist");

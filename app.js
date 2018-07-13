@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 import authRouter from "./routes/auth";
 import chatRouter from "./routes/chat";
+import meRouter from "./routes/me";
 import Promise from "bluebird";
 import { invalidUrlMiddleware, authenticationMiddleware } from "./middleware";
 
@@ -19,5 +20,6 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/authentication", authRouter);
 app.use(authenticationMiddleware);
 app.use("/chat", chatRouter);
+app.use("/me", meRouter);
 app.use(invalidUrlMiddleware);
 export default app;

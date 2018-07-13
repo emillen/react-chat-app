@@ -5,8 +5,8 @@ import jwt from "jsonwebtoken";
 
 import User from "../models/User";
 import Chat from "../models/Chat";
-import Message from "../models/Message"
-import {io} from "../io"
+import Message from "../models/Message";
+import { io } from "../io";
 
 const verify = Promise.promisify(jwt.verify);
 const router = express.Router();
@@ -24,12 +24,15 @@ router.post("/", (req, res) => {
         name: req.body.name,
         createdBy: new ObjectId(user._id)
       });
-      return chat.save();
+      chat.users.push(user._id);
+      user.chats.push(chat._id);
+      return Promise.all([user.save(), chat.save()]);
     })
-    .then(chat => {
+    .then(([_, chat]) => {
       res.status(200).send({ added: true, message: "Chat added", chat: chat });
     })
     .catch(err => {
+      console.dir(err);
       res.status(500).send({ err: true, message: "Chat already exists" });
     });
 });
@@ -59,7 +62,7 @@ router.get("/:id", (req, res) => {
 });
 
 router.post("/:id", (req, res) => {
-	if (req.params.id && req.params.id.length >= 10 && req.body.message)
+  if (req.params.id && req.params.id.length >= 10 && req.body.message)
     Chat.findOne({ _id: new ObjectId(req.params.id) })
       .then(chat => {
         const messageObject = new Message({

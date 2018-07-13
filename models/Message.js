@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Promise from "bluebird";
+
 const Schema = mongoose.Schema;
 
 const messageSchema = new Schema({
