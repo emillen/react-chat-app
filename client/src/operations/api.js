@@ -85,6 +85,10 @@ export const getMyChatList = (dispatch) => {
   getChatList(dispatch, "/me/chats");
 };
 
+export const chatSearch = (dispatch, searchString) => {
+	getChatList(dispatch, `/chats?search="${searchString}"`);
+}
+
 export const getChat = (dispatch, chatId) => {
   
   const token = localStorage.getItem("serverToken");

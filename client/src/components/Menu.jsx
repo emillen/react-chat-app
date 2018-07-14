@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import { withRouter } from "react-router-dom";
-import PropTypes from 'prop-types';
+import debounce from "lodash/debounce";
+import PropTypes from "prop-types";
 const CreateChat = withRouter(({ onSubmit, history }) => {
   return (
     <form
@@ -15,6 +16,7 @@ const CreateChat = withRouter(({ onSubmit, history }) => {
           .catch();
       }}
     >
+			<h2 className="text-center">Create chat</h2>
       <div className="form-group">
         <input
           name="name"
@@ -30,13 +32,107 @@ const CreateChat = withRouter(({ onSubmit, history }) => {
   );
 });
 
+class JoinChats extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      chosenChats: []
+    };
+    this.onChange = this.onChange.bind(this);
+    this.search = debounce(this.search, 200).bind(this);
+    this.clickChat = this.clickChat.bind(this);
+    this.removeChat = this.removeChat.bind(this);
+  }
+
+  componentDidMount() {}
+
+  onChange(e) {
+    this.search(e.target.value);
+  }
+
+  search(searchString) {
+    this.props.chatSearch(searchString);
+  }
+
+  clickChat(chat) {
+    this.setState({ chosenChats: [...this.state.chosenChats, chat] });
+  }
+
+  removeChat(chatId) {
+    this.setState({
+      chosenChats: this.state.chosenChats.filter(chat => chat._id !== chatId)
+    });
+  }
+
+  render() {
+    return (
+      <div className="card p-5">
+        <h2 className="text-center">Join chats</h2>
+        <input
+          className="form-control border-primary mt-1"
+          placeholder="Search..."
+          onChange={this.onChange}
+        />
+
+        <div className="mt-2">
+          {this.state.chosenChats.map(chat => {
+            return (
+              <span
+                key={chat._id}
+                className="badge badge-pill badge-dark p-2 pl-3 mb-1 mr-1"
+              >
+                {chat.name}
+                <span
+                  className="ml-2 px-1 rounded-circle bg-light text-dark"
+                  style={{ cursor: "pointer", color: "white" }}
+                  onClick={() => this.removeChat(chat._id)}
+                >
+                  &times;
+                </span>
+              </span>
+            );
+          })}
+        </div>
+        <ul className="list-group mt-3">
+          {this.props.chatList
+            .filter(chat => {
+              return (
+                this.state.chosenChats
+                  .map(cChat => {
+                    return cChat._id;
+                  })
+                  .indexOf(chat._id) === -1
+              );
+            })
+            .map(chat => {
+              return (
+                <li
+                  style={{ cursor: "pointer" }}
+                  onClick={() => this.clickChat(chat)}
+                  key={chat._id}
+                  className="list-group-item bg-light"
+                >
+                  {chat.name}
+                </li>
+              );
+            })}
+        </ul>
+        <div className="form-group mt-4">
+          <button className="btn btn-dark float-right">Join</button>
+        </div>
+      </div>
+    );
+  }
+}
+
 class Menu extends Component {
   constructor(props) {
     super(props);
 
     this.onClick = this.onClick.bind(this);
     this.state = {
-      active: "create-chat"
+      active: "join-chats"
     };
   }
 
@@ -49,7 +145,7 @@ class Menu extends Component {
       return <Redirect to="/login" />;
     } else {
       return (
-        <div className="card container mt-5 p-5">
+        <div className="card container bg-light mt-5 p-5">
           <h2 className="text-center">Menu</h2>
           <ul className="nav nav-tabs">
             <li className="nav-item">
@@ -66,9 +162,9 @@ class Menu extends Component {
             <li className="nav-item">
               <button
                 onClick={this.onClick}
-                id="join-chat"
+                id="join-chats"
                 className={`btn btn-default nav-link ${
-                  this.state.active === "join-chat" ? "active" : ""
+                  this.state.active === "join-chats" ? "active" : ""
                 }`}
               >
                 Join Chat
@@ -78,6 +174,13 @@ class Menu extends Component {
 
           {this.state.active === "create-chat" && (
             <CreateChat onSubmit={this.props.addChat} />
+          )}
+
+          {this.state.active === "join-chats" && (
+            <JoinChats
+              chatList={this.props.chatList}
+              chatSearch={this.props.chatSearch}
+            />
           )}
 
           {this.props.error && (
@@ -92,8 +195,10 @@ class Menu extends Component {
 }
 
 Menu.propTypes = {
-	isAuthenticated: PropTypes.bool.isRequired,
-	error: PropTypes.string
-}
+  isAuthenticated: PropTypes.bool.isRequired,
+  error: PropTypes.string,
+  chatSearch: PropTypes.func.isRequired,
+  addChat: PropTypes.func.isRequired
+};
 
 export default Menu;

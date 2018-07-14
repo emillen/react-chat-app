@@ -8,5 +8,7 @@ const chatSchema = new Schema({
   users: [{ type: Schema.Types.ObjectId, ref: "User" }]
 });
 
+chatSchema.index({ name: "text" });
+
 const Chat = mongoose.model("Chat", chatSchema);
 export default Chat;

@@ -37,13 +37,17 @@ router.post("/", (req, res) => {
     });
 });
 
-router.get("/", (_, res) => {
-  Chat.find({})
-    .select(["name"])
+router.get("/", (req, res) => {
+  const query = req.query.search
+    ? { $text: { $search: req.query.search } }
+    : {};
+  Chat.find(query)
+		.select(["name", "_id"])
     .then(chats => res.status(200).send(chats))
-    .catch(err =>
-      res.status(500).send({ error: true, message: "internal server error" })
-    );
+    .catch(err => {
+      console.log(err);
+      res.status(500).send({ error: true, message: "internal server error" });
+    });
 });
 
 router.get("/:id", (req, res) => {
@@ -82,4 +86,5 @@ router.post("/:id", (req, res) => {
       })
       .catch(err => console.log(err));
 });
+
 export default router;
