@@ -18,7 +18,7 @@ import { error, errorClear } from "../actions/error";
 
 export const authenticateToServer = (dispatch, email, password) => {
   dispatch(authenticate());
-  axios
+  return axios
     .post(
       "/authentication",
       { email, password },
@@ -33,10 +33,11 @@ export const authenticateToServer = (dispatch, email, password) => {
         moment(exp * 1000).toDate()
       );
       dispatch(errorClear());
-      dispatch(authenticationSuccess());
+			dispatch(authenticationSuccess());
+			return data;
     })
     .catch(err => {
-      errorOrLogout(dispatch, err);
+			return errorOrLogout(dispatch, err);
     });
 };
 
@@ -48,18 +49,19 @@ export const logoutFromServer = dispatch => {
 
 export const register = (dispatch, email, username, password) => {
   dispatch(registerAction());
-  axios
+  return axios
     .post(
       "/authentication/register",
       { email, username, password },
       { headers: { "Content-Type": "application/json" } }
     )
-    .then(() => {
+    .then(data => {
       dispatch(errorClear());
-      dispatch(registerSuccess());
+			dispatch(registerSuccess());
+			return data;
     })
     .catch(err => {
-      errorOrLogout(dispatch, err);
+			return errorOrLogout(dispatch, err);
     });
 };
 
@@ -67,31 +69,32 @@ export const getChatList = (dispatch, baseUrl) => {
   const url = baseUrl || "/chats";
   dispatch(getChatListCreator());
   const token = localStorage.getItem("serverToken");
-  axios
+  return axios
     .get(url, {
       headers: { "Content-Type": "application/json", "x-access-token": token }
     })
     .then(response => response.data)
     .then(chatList => {
       dispatch(errorClear());
-      dispatch(getChatListSuccess(chatList));
+			dispatch(getChatListSuccess(chatList));
+			return chatList;
     })
     .catch(err => {
-      errorOrLogout(dispatch, err);
+      return errorOrLogout(dispatch, err);
     });
 };
 
 export const getMyChatList = dispatch => {
-  getChatList(dispatch, "/me/chats");
+  return getChatList(dispatch, "/me/chats");
 };
 
 export const chatSearch = (dispatch, searchString) => {
-  getChatList(dispatch, `/chats?search="${searchString}"`);
+  return getChatList(dispatch, `/chats?search="${searchString}"`);
 };
 
 export const getChat = (dispatch, chatId) => {
   const token = localStorage.getItem("serverToken");
-  axios
+  return axios
     .get(`/chats/${chatId}`, {
       headers: { "Content-Type": "application/json", "x-access-token": token }
     })
@@ -101,7 +104,9 @@ export const getChat = (dispatch, chatId) => {
       dispatch(displayChat(chat));
       return chat;
     })
-    .catch(err => errorOrLogout(dispatch, err));
+    .catch(err => {
+      return errorOrLogout(dispatch, err);
+    });
 };
 
 export const sendMessage = (dispatch, message, chatId) => {
@@ -115,7 +120,7 @@ export const sendMessage = (dispatch, message, chatId) => {
       }
     )
     .catch(err => {
-      errorOrLogout(dispatch, err);
+			return errorOrLogout(dispatch, err);
     });
 };
 
@@ -136,8 +141,7 @@ export const addChat = (dispatch, chatName) => {
       return true;
     })
     .catch(err => {
-      errorOrLogout(dispatch, err);
-      return Promise.reject(err.response.data);
+      return errorOrLogout(dispatch, err);
     });
 };
 
@@ -160,8 +164,7 @@ export const joinChat = (dispatch, chatId) => {
       }
     )
     .catch(err => {
-      errorOrLogout(dispatch, err);
-      return Promise.reject(err.reponse.data);
+      return errorOrLogout(dispatch, err);
     });
 };
 
@@ -177,5 +180,6 @@ const errorOrLogout = (dispatch, err) => {
           err.response.statusText
       )
     );
-  }
+	}
+	return Promise.reject(err);
 };
