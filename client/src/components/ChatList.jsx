@@ -41,7 +41,7 @@ class ChatList extends Component {
   render() {
     return (
       <div
-        className="border-right border-dark "
+        className="border-right border-dark d-flex flex-column"
         style={{ height: "100%", maxHeight: "100%" }}
       >
         <ChatListMenu
@@ -49,7 +49,7 @@ class ChatList extends Component {
           onChange={e => this.setState({ searchString: e.target.value })}
         />
         <div
-          style={{ maxHeight: "100%", overflowY: "auto" }}
+          style={{ overflowY: "auto", flexGrow: 1 }}
           className="list-group"
         >
           {this.props.list
