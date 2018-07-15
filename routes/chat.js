@@ -1,12 +1,11 @@
-import express from "express";
 import Promise from "bluebird";
-import mongoose from "mongoose";
+import express from "express";
 import jwt from "jsonwebtoken";
-
-import User from "../models/User";
+import mongoose from "mongoose";
+import { io } from "../io";
 import Chat from "../models/Chat";
 import Message from "../models/Message";
-import { io } from "../io";
+import User from "../models/User";
 
 const verify = Promise.promisify(jwt.verify);
 const router = express.Router();
@@ -40,11 +39,16 @@ router.post("/", (req, res) => {
 router.get("/", (req, res) => {
   const query = req.query.search
     ? { $text: { $search: req.query.search } }
-		: {};
+    : {};
+  req.query.filter === "joined" &&
+    (query.users = {
+      $not: { $elemMatch: { $eq: new ObjectId(req.decoded.id) } }
+    });
   Chat.find(query)
-		.select(["name", "_id"])
+    .select(["name", "_id"])
     .then(chats => res.status(200).send(chats))
     .catch(err => {
+      console.log(err);
       res.status(500).send({ error: true, message: "internal server error" });
     });
 });
@@ -81,7 +85,7 @@ router.post("/:id", (req, res) => {
         return messageObject.populate("user").execPopulate();
       })
       .then(messageObject => {
-				res.status(201).send({added:true})
+        res.status(201).send({ added: true });
         io.in(req.params.id).emit("message", messageObject);
       })
       .catch(err => console.log(err));
