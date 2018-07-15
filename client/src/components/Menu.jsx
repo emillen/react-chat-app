@@ -16,7 +16,7 @@ const CreateChat = withRouter(({ onSubmit, history }) => {
           .catch();
       }}
     >
-			<h2 className="text-center">Create chat</h2>
+      <h2 className="text-center">Create chat</h2>
       <div className="form-group">
         <input
           name="name"
@@ -37,12 +37,15 @@ class JoinChats extends Component {
     super(props);
 
     this.state = {
-      chosenChats: []
+      chosenChats: [],
+			loading: false,
+			success: false
     };
     this.onChange = this.onChange.bind(this);
     this.search = debounce(this.search, 200).bind(this);
     this.clickChat = this.clickChat.bind(this);
     this.removeChat = this.removeChat.bind(this);
+    this.joinChats = this.joinChats.bind(this);
   }
 
   componentDidMount() {}
@@ -65,6 +68,20 @@ class JoinChats extends Component {
     });
   }
 
+  joinChats() {
+		this.setState({ chosenChats: [], loading: true });
+		this.search("");
+		document.querySelector("#join-chat-input").value = "";
+    this.props
+      .joinChats(this.state.chosenChats.map(chat => chat._id))
+      .then(() => {
+        this.setState({ loading: false, success : true });
+      })
+      .catch(() => {
+        this.setState({ loading: false, success:false });
+      });
+  }
+
   render() {
     return (
       <div className="card p-5">
@@ -73,6 +90,7 @@ class JoinChats extends Component {
           className="form-control border-primary mt-1"
           placeholder="Search..."
           onChange={this.onChange}
+          id="join-chat-input"
         />
 
         <div className="mt-2">
@@ -118,8 +136,12 @@ class JoinChats extends Component {
               );
             })}
         </ul>
+				{this.state.success && <span>success...</span>}
+        {this.state.loading && <span>loading...</span>}
         <div className="form-group mt-4">
-          <button className="btn btn-dark float-right">Join</button>
+          <button onClick={this.joinChats} className="btn btn-dark float-right">
+            Join
+          </button>
         </div>
       </div>
     );
@@ -180,6 +202,7 @@ class Menu extends Component {
             <JoinChats
               chatList={this.props.chatList}
               chatSearch={this.props.chatSearch}
+              joinChats={this.props.joinChats}
             />
           )}
 
@@ -198,7 +221,8 @@ Menu.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
   error: PropTypes.string,
   chatSearch: PropTypes.func.isRequired,
-  addChat: PropTypes.func.isRequired
+  addChat: PropTypes.func.isRequired,
+  joinChats: PropTypes.func.isRequired
 };
 
 export default Menu;

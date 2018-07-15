@@ -90,7 +90,6 @@ export const chatSearch = (dispatch, searchString) => {
 };
 
 export const getChat = (dispatch, chatId) => {
-
   const token = localStorage.getItem("serverToken");
   axios
     .get(`/chats/${chatId}`, {
@@ -139,6 +138,30 @@ export const addChat = (dispatch, chatName) => {
     .catch(err => {
       errorOrLogout(dispatch, err);
       return Promise.reject(err.response.data);
+    });
+};
+
+export const joinChats = (dispatch, chatIdList) => {
+  return Promise.all(
+    chatIdList.map(chatId => {
+      return joinChat(dispatch, chatId);
+    })
+  );
+};
+
+export const joinChat = (dispatch, chatId) => {
+  const token = localStorage.getItem("serverToken");
+  return axios
+    .post(
+      "/me/chats",
+      { chat: chatId },
+      {
+        headers: { "Content-Type": "application/json", "x-access-token": token }
+      }
+    )
+    .catch(err => {
+      errorOrLogout(dispatch, err);
+      return Promise.reject(err.reponse.data);
     });
 };
 
