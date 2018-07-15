@@ -89,7 +89,7 @@ export const getMyChatList = dispatch => {
 };
 
 export const chatSearch = (dispatch, searchString) => {
-  return getChatList(dispatch, `/chats/?search="${searchString}"&filter=joined`);
+  return getChatList(dispatch, `/chats/?search=${searchString}&filter=joined`);
 };
 
 export const getChat = (dispatch, chatId) => {

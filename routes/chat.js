@@ -37,16 +37,17 @@ router.post("/", (req, res) => {
 });
 
 router.get("/", (req, res) => {
-  const query = req.query.search
-    ? { $text: { $search: req.query.search } }
-    : {};
+	const regexp = new RegExp(req.query.search, "i");
+	const query = {name: regexp}
   req.query.filter === "joined" &&
     (query.users = {
       $not: { $elemMatch: { $eq: new ObjectId(req.decoded.id) } }
     });
   Chat.find(query)
     .select(["name", "_id"])
-    .then(chats => res.status(200).send(chats))
+    .then(chats => {
+      res.status(200).send(chats);
+    })
     .catch(err => {
       console.log(err);
       res.status(500).send({ error: true, message: "internal server error" });

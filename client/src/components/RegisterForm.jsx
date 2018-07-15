@@ -30,7 +30,7 @@ class RegisterForm extends Component {
   }
 
 
-
+	
   submitForm(e) {
     e.preventDefault();
     this.props.onSubmit(
