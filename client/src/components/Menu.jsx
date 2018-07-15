@@ -38,8 +38,8 @@ class JoinChats extends Component {
 
     this.state = {
       chosenChats: [],
-			loading: false,
-			success: false
+      loading: false,
+      success: false
     };
     this.onChange = this.onChange.bind(this);
     this.search = debounce(this.search, 200).bind(this);
@@ -69,16 +69,21 @@ class JoinChats extends Component {
   }
 
   joinChats() {
-		this.setState({ chosenChats: [], loading: true });
-		this.search("");
-		document.querySelector("#join-chat-input").value = "";
+    const chosenChats = this.state.chosenChats;
     this.props
-      .joinChats(this.state.chosenChats.map(chat => chat._id))
+      .chatSearch("") //(UGLY SOLUTION) to clear out searchResults
       .then(() => {
-        this.setState({ loading: false, success : true });
+        document.querySelector("#join-chat-input").value = "";
+        this.setState({ chosenChats: [], loading: true });
+        return this.props.joinChats(
+          chosenChats.map(chat => chat._id)
+        );
+      })
+      .then(() => {
+        this.setState({ loading: false, success: true });
       })
       .catch(() => {
-        this.setState({ loading: false, success:false });
+        this.setState({ loading: false, success: false });
       });
   }
 
@@ -136,8 +141,8 @@ class JoinChats extends Component {
               );
             })}
         </ul>
-				{this.state.success && <span>success...</span>}
-        {this.state.loading && <span>loading...</span>}
+        {this.state.success && <span className="text-success">success...</span>}
+        {this.state.loading && <span className="text-info">loading...</span>}
         <div className="form-group mt-4">
           <button onClick={this.joinChats} className="btn btn-dark float-right">
             Join
