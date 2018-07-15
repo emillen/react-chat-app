@@ -51,6 +51,7 @@ class JoinChats extends Component {
   componentDidMount() {}
 
   onChange(e) {
+		this.setState({success: false})
     this.search(e.target.value);
   }
 
