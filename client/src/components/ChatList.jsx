@@ -15,7 +15,7 @@ const ChatListItem = ({ title, active, onclick }) => {
 };
 
 const ChatListMenu = ({ onChange, value }) => (
-  <div className="p-2 d-flex bg-light">
+  <div className="p-2 d-flex bg-light" style={{flexShrink: 0}}>
     <div style={{ flexGrow: 2 }}>
       <input
         placeholder={"Filter..."}
