@@ -37,8 +37,8 @@ router.post("/", (req, res) => {
 });
 
 router.get("/", (req, res) => {
-	const regexp = new RegExp(req.query.search, "i");
-	const query = {name: regexp}
+  const regexp = new RegExp(req.query.search, "i");
+  const query = { name: regexp };
   req.query.filter === "joined" &&
     (query.users = {
       $not: { $elemMatch: { $eq: new ObjectId(req.decoded.id) } }

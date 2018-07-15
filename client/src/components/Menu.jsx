@@ -48,7 +48,9 @@ class JoinChats extends Component {
     this.joinChats = this.joinChats.bind(this);
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+		this.search("");
+	}
 
   onChange(e) {
 		this.setState({success: false})
