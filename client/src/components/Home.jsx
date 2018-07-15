@@ -31,6 +31,7 @@ class Home extends Component {
             chatId={this.props.chat._id}
             recieveMessage={this.props.recieveMessage}
           />
+          {this.props.error && <span>{this.props.error}</span>}
           <div
             id="chatlist"
             style={{ height: "100%", width: "100%" }}

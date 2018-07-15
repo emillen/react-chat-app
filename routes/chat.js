@@ -82,6 +82,7 @@ router.post("/:id", (req, res) => {
         return messageObject.populate("user").execPopulate();
       })
       .then(messageObject => {
+				res.status(201).send({added:true})
         io.in(req.params.id).emit("message", messageObject);
       })
       .catch(err => console.log(err));

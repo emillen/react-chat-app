@@ -10,7 +10,6 @@ const verify = Promise.promisify(jwtModule.verify);
 export let io = {};
 const setupIo = http => {
   io = ioModule(http, {'pingInterval': 2000, 'pingTimeout': 5000});
-
   io.use((socket, next) => {
     if (socket.handshake.query && socket.handshake.query.token) {
       verify(socket.handshake.query.token, "asdasd")

@@ -63,8 +63,8 @@ export const register = (dispatch, email, username, password) => {
     });
 };
 
-export const getChatList =( dispatch, baseUrl )=> {
-	const url = baseUrl || "/chats";
+export const getChatList = (dispatch, baseUrl) => {
+  const url = baseUrl || "/chats";
   dispatch(getChatListCreator());
   const token = localStorage.getItem("serverToken");
   axios
@@ -81,16 +81,16 @@ export const getChatList =( dispatch, baseUrl )=> {
     });
 };
 
-export const getMyChatList = (dispatch) => {
+export const getMyChatList = dispatch => {
   getChatList(dispatch, "/me/chats");
 };
 
 export const chatSearch = (dispatch, searchString) => {
-	getChatList(dispatch, `/chats?search="${searchString}"`);
-}
+  getChatList(dispatch, `/chats?search="${searchString}"`);
+};
 
 export const getChat = (dispatch, chatId) => {
-  
+
   const token = localStorage.getItem("serverToken");
   axios
     .get(`/chats/${chatId}`, {
@@ -107,7 +107,7 @@ export const getChat = (dispatch, chatId) => {
 
 export const sendMessage = (dispatch, message, chatId) => {
   const token = localStorage.getItem("serverToken");
-  axios
+  return axios
     .post(
       `/chats/${chatId}`,
       { message },
@@ -115,7 +115,6 @@ export const sendMessage = (dispatch, message, chatId) => {
         headers: { "Content-Type": "application/json", "x-access-token": token }
       }
     )
-    .then()
     .catch(err => {
       errorOrLogout(dispatch, err);
     });
