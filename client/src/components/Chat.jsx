@@ -70,9 +70,33 @@ class Chat extends Component {
     if (ma) {
       ma.scrollTo(0, ma.scrollHeight);
     }
+
+    if (this.props.chat) {
+			const now = new Date();
+			this.props.updateChat(
+        Object.assign(
+          {},
+          {
+            _id: this.props.chat._id,
+            lastViewed: now,
+          }
+        )
+      );
+    }
+  }
+
+  shouldComponentUpdate(nextProps) {
+    if (!this.props.chat && nextProps.chat) return true;
+    if (this.props.chat && nextProps.chat) {
+      return (
+        nextProps.chat._id !== this.props.chat._id ||
+        nextProps.chat.messages.length !== this.props.chat.messages.length
+      );
+    } else return false;
   }
 
   render() {
+		
     if (!this.props.chat.name)
       return (
         <ChatHeader
@@ -129,7 +153,8 @@ class Chat extends Component {
 Chat.propTypes = {
   sendMessage: PropTypes.func.isRequired,
   onBackbuttonClick: PropTypes.func.isRequired,
-  chat: PropTypes.object.isRequired
+  chat: PropTypes.object.isRequired,
+  updateChat: PropTypes.func.isRequired
 };
 
 export default Chat;

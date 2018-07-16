@@ -1,11 +1,16 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-const ChatListItem = ({ title, active, onclick }) => {
-  return (
+const ChatListItem = ({ title, active, lastViewed, updatedAt, onclick }) => {
+  const normalizeLastViewed = lastViewed ? new Date(lastViewed) : new Date(0);
+	const normalizeUpdatedAt = updatedAt ? new Date(updatedAt) : new Date(0);
+	return (
+
     <a
       className={
-        "list-group-item list-group-item-action font-weight-bold" +
-        (active ? " bg-dark text-light" : "")
+        "list-group-item list-group-item-action font-weight-bold " +
+        ((active && " bg-dark text-light") ||
+          (normalizeLastViewed < normalizeUpdatedAt && " bg-info text-white ") ||
+          "")
       }
       onClick={onclick}
     >
@@ -15,7 +20,7 @@ const ChatListItem = ({ title, active, onclick }) => {
 };
 
 const ChatListMenu = ({ onChange, value }) => (
-  <div className="p-2 d-flex bg-light" style={{flexShrink: 0}}>
+  <div className="p-2 d-flex bg-light" style={{ flexShrink: 0 }}>
     <div style={{ flexGrow: 2 }}>
       <input
         placeholder={"Filter..."}
@@ -38,6 +43,12 @@ class ChatList extends Component {
     this.state = { searchString: "", menuModalOpen: false };
   }
 
+  shouldComponentUpdate(nextProps) {
+    if (!this.state.activeChat) return true;
+    if (this.props.activeChat !== nextProps.activeChat) return true;
+    return false;
+  }
+
   render() {
     return (
       <div
@@ -48,10 +59,7 @@ class ChatList extends Component {
           value={this.state.searchString}
           onChange={e => this.setState({ searchString: e.target.value })}
         />
-        <div
-          style={{ overflowY: "auto", flexGrow: 1 }}
-          className="list-group"
-        >
+        <div style={{ overflowY: "auto", flexGrow: 1 }} className="list-group">
           {this.props.list
             .filter(chat =>
               chat.name
@@ -63,6 +71,8 @@ class ChatList extends Component {
             })
             .map(chat => (
               <ChatListItem
+                updatedAt={chat.updatedAt}
+                lastViewed={chat.lastViewed}
                 key={chat._id}
                 title={chat.name}
                 active={chat._id === this.props.activeChat}

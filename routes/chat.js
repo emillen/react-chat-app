@@ -36,7 +36,6 @@ router.post("/", (req, res) => {
         .send({ added: true, message: "Chat added", chat: sub.chat });
     })
     .catch(err => {
-      console.dir(err);
       res.status(500).send({ err: true, message: "Chat already exists" });
     });
 });
@@ -74,14 +73,27 @@ router.get("/:id", (req, res) => {
     })
     .exec()
     .then(chat => {
+      return Promise.all([
+        chat,
+        Subscription.findOneAndUpdate(
+          {
+            user: new ObjectId(req.decoded.id),
+            chat: new ObjectId(chat._id)
+          },
+          { $set: { lastViewed: chat.updatedAt } }
+        )
+      ]);
+    })
+    .then(([chat, _]) => {
       res.status(200).send(chat);
     })
-    .catch(err =>
-      res.status(500).send({ error: true, message: "Unknown server error" })
-    );
+    .catch(err => {
+      console.log(err);
+      res.status(500).send({ error: true, message: "Unknown server error" });
+    });
 });
 
-router.post("/:id", (req, res) => {
+router.post("/:id", (req, res) => {	
   if (req.params.id && req.params.id.length >= 10 && req.body.message)
     Chat.findOne({ _id: new ObjectId(req.params.id) })
       .then(chat => {
@@ -94,12 +106,18 @@ router.post("/:id", (req, res) => {
       })
       .then(([chat, messageObject]) => {
         chat.messages.push(messageObject);
-        chat.save();
-        return messageObject.populate("user").execPopulate();
+        return Promise.all([
+          chat.save(),
+          messageObject.populate("user").execPopulate()
+        ]);
       })
-      .then(messageObject => {
+      .then(([chat, messageObject]) => {
         res.status(201).send({ added: true });
         io.in(req.params.id).emit("message", messageObject);
+        io.in(`${req.params.id}_updates`).emit("update", {
+          _id: chat._id,
+          updatedAt: chat.updatedAt
+        });
       })
       .catch(err => console.log(err));
 });

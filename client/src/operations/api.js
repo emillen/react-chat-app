@@ -33,11 +33,11 @@ export const authenticateToServer = (dispatch, email, password) => {
         moment(exp * 1000).toDate()
       );
       dispatch(errorClear());
-			dispatch(authenticationSuccess());
-			return data;
+      dispatch(authenticationSuccess());
+      return data;
     })
     .catch(err => {
-			return errorOrLogout(dispatch, err);
+      return errorOrLogout(dispatch, err);
     });
 };
 
@@ -57,11 +57,11 @@ export const register = (dispatch, email, username, password) => {
     )
     .then(data => {
       dispatch(errorClear());
-			dispatch(registerSuccess());
-			return data;
+      dispatch(registerSuccess());
+      return data;
     })
     .catch(err => {
-			return errorOrLogout(dispatch, err);
+      return errorOrLogout(dispatch, err);
     });
 };
 
@@ -76,8 +76,8 @@ export const getChatList = (dispatch, baseUrl) => {
     .then(response => response.data)
     .then(chatList => {
       dispatch(errorClear());
-			dispatch(getChatListSuccess(chatList));
-			return chatList;
+      dispatch(getChatListSuccess(chatList));
+      return chatList;
     })
     .catch(err => {
       return errorOrLogout(dispatch, err);
@@ -120,7 +120,7 @@ export const sendMessage = (dispatch, message, chatId) => {
       }
     )
     .catch(err => {
-			return errorOrLogout(dispatch, err);
+      return errorOrLogout(dispatch, err);
     });
 };
 
@@ -169,17 +169,17 @@ export const joinChat = (dispatch, chatId) => {
 };
 
 const errorOrLogout = (dispatch, err) => {
-  console.dir(err);
-  if (err.reponse && err.response.status === 401) {
+  if (
+    (err.reponse && err.response.status === 401) ||
+    error.code === "ECONNABORTED"
+  ) {
     return logoutFromServer(dispatch);
   } else {
     dispatch(
       error(
-        (err.response.data && err.response.data.message) ||
-          err.message ||
-          err.response.statusText
+        (err.response.data && err.response.data.message) || error.response.statusText || "unexpected error" 
       )
     );
-	}
-	return Promise.reject(err);
+  }
+  return Promise.reject(err);
 };

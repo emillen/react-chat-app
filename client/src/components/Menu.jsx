@@ -121,6 +121,11 @@ class JoinChats extends Component {
             );
           })}
         </div>
+				<div className="form-group mt-4">
+          <button onClick={this.joinChats} className="btn btn-dark float-right">
+            Join
+          </button>
+        </div>
         <ul className="list-group mt-3">
           {this.props.chatList
             .filter(chat => {
@@ -146,11 +151,7 @@ class JoinChats extends Component {
             })}
         </ul>
         
-        <div className="form-group mt-4">
-          <button onClick={this.joinChats} className="btn btn-dark float-right">
-            Join
-          </button>
-        </div>
+        
       </div>
     );
   }

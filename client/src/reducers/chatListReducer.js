@@ -1,7 +1,8 @@
 import {
   NEW_CHAT,
   GET_CHAT_LIST_SUCESS,
-  GET_CHAT_LIST
+  GET_CHAT_LIST,
+  UPDATE_CHAT
 } from "../actions/types";
 
 export default (state = [], action) => {
@@ -12,6 +13,12 @@ export default (state = [], action) => {
       return state;
     case GET_CHAT_LIST_SUCESS:
       return action.chatList;
+    case UPDATE_CHAT:{
+      return state.map(chat => {
+        if (chat._id === action.chat._id) {
+          return { ...chat ,  ...action.chat };
+        } else return { ...chat };
+      });}
     default:
       return state;
   }

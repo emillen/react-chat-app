@@ -14,7 +14,8 @@ export default (state = initialState, action) => {
       return action.chat;
     case RECIEVE_MESSAGE:
       return Object.assign({}, state, {
-        messages: state.messages.concat(action.message)
+				messages: state.messages.concat(action.message),
+				updatedAt: action.message.createdAt
       });
     default:
       return state;

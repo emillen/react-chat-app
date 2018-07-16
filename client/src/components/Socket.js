@@ -17,7 +17,6 @@ class Socket extends Component {
         reconnectionAttempts: Infinity
       })
     };
-
   }
 
   shouldComponentUpdate(nextProps) {
@@ -28,8 +27,12 @@ class Socket extends Component {
   componentDidMount() {
     this.state.socket.connect("/");
     this.state.socket.on("message", message => {
-      this.setState();
       this.props.recieveMessage(message);
+      this.state.socket.emit("view chat", this.props.chatId);
+    });
+
+    this.state.socket.on("update", chat => {
+      this.props.updateChat(chat);
     });
   }
   componentDidUpdate() {
@@ -44,7 +47,8 @@ class Socket extends Component {
 }
 
 Socket.propTypes = {
-  chatId: PropTypes.string
+  chatId: PropTypes.string,
+  updateChat: PropTypes.func.isRequired
 };
 
 export default Socket;

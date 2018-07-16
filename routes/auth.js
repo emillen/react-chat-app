@@ -8,21 +8,19 @@ const router = express.Router();
 const bcrypt = Promise.promisifyAll(bcryptModule);
 
 router.post("/", (req, res) => {
-	console.log('heheh')
   User.findOne({ email: req.body.email })
     .then(user => {
       if (!user) return Promise.reject("User does not exist");
-      console.log(user);
       return Promise.all([
         user,
         bcrypt
           .compare(req.body.password, user.passwordHash)
           .then(bResponse => {
 						if(bResponse === false)
-							return Promise.reject("Password does not match")
+							return Promise.reject()
 						return bResponse
 					})
-      ]);
+      ]).catch(() => Promise.reject("Password does not match"));
     })
     .then(([user, _]) => {
       // using poop "secret" just for testing

@@ -16,9 +16,16 @@ router.get("/chats", (req, res) => {
     })
     .exec()
     .then(subs => {
-      res.status(200).send(subs.map(sub => sub.chat));
+      res.status(200).send(
+        subs.map(sub => {
+					const subobj = sub.toObject()
+					subobj.chat.lastViewed = subobj.lastViewed;
+          return subobj.chat;
+        })
+      );
     })
     .catch(err => {
+      console.log(err);
       res.status(500).send({ message: "Unknown server error" });
     });
 });

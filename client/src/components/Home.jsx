@@ -30,6 +30,7 @@ class Home extends Component {
           <Socket
             chatId={this.props.chat._id}
             recieveMessage={this.props.recieveMessage}
+            updateChat={this.props.updateChat}
           />
           {this.props.error && <span>{this.props.error}</span>}
           <div
@@ -57,6 +58,7 @@ class Home extends Component {
             <Chat
               chat={this.props.chat}
               sendMessage={this.props.sendMessage}
+              updateChat={this.props.updateChat}
               onBackbuttonClick={() => {
                 this.setState({ active: "chatlist" });
               }}
