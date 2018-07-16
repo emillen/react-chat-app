@@ -92,7 +92,7 @@ class JoinChats extends Component {
 
   render() {
     return (
-      <div className="card p-5">
+      <div className="card p-5 mb-5">
         <h2 className="text-center">Join chats</h2>
         <input
           className="form-control border-primary mt-1"
@@ -100,8 +100,9 @@ class JoinChats extends Component {
           onChange={this.onChange}
           id="join-chat-input"
         />
-
-        <div className="mt-2">
+				{this.state.success && <span className="text-success">success...</span>}
+        {this.state.loading && <span className="text-info">loading...</span>}
+        <div className="mt-2" >
           {this.state.chosenChats.map(chat => {
             return (
               <span
@@ -144,8 +145,7 @@ class JoinChats extends Component {
               );
             })}
         </ul>
-        {this.state.success && <span className="text-success">success...</span>}
-        {this.state.loading && <span className="text-info">loading...</span>}
+        
         <div className="form-group mt-4">
           <button onClick={this.joinChats} className="btn btn-dark float-right">
             Join
@@ -175,7 +175,7 @@ class Menu extends Component {
       return <Redirect to="/login" />;
     } else {
       return (
-        <div className="card container bg-light mt-5 p-5">
+        <div className="card container bg-light p-5" style={{maxHeight: "100%", overflow: "scroll"}}>
           <h2 className="text-center">Menu</h2>
           <ul className="nav nav-tabs">
             <li className="nav-item">
