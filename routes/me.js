@@ -1,29 +1,25 @@
 import express from "express";
 import User from "../models/User";
 import Chat from "../models/Chat";
+import Subscription from "../models/Subscription";
 import mongoose from "mongoose";
 import Promise from "bluebird";
 
 const router = express.Router();
 
 router.get("/chats", (req, res) => {
-  User.findOne({ _id: new mongoose.Types.ObjectId(req.decoded.id) })
+  Subscription.find({ user: req.decoded.id })
     .populate({
-      path: "chats",
+      path: "chat",
       model: Chat,
       select: "-messages"
     })
     .exec()
-    .then(user => {
-      if (!user) return Promise.reject();
-			return user;
-    })
-    .then(user => {
-      if (!user.chats) return res.status(200).send([]);
-      res.status(200).send(user.chats);
+    .then(subs => {
+      res.status(200).send(subs.map(sub => sub.chat));
     })
     .catch(err => {
-      res.status(500).send({ message: "Unable to find chats" });
+      res.status(500).send({ message: "Unknown server error" });
     });
 });
 
@@ -41,12 +37,8 @@ router.post("/chats", (req, res) => {
         return [user, chat];
       })
       .then(([user, chat]) => {
-        if (!user.chats) user.chats = [];
-        if (!chat.users) chat.users = [];
-        if (!user.chats.includes(chatId)) user.chats.push(chat._id);
-        if (!chat.users.includes(userId)) chat.users.push(user._id);
-
-        return Promise.all([user.save(), chat.save()]);
+        const subscription = new Subscription({ user, chat });
+        return subscription.save();
       })
       .then(() => {
         res.status(200).send({ message: "chat added" });

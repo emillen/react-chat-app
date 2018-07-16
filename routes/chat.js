@@ -6,7 +6,7 @@ import { io } from "../io";
 import Chat from "../models/Chat";
 import Message from "../models/Message";
 import User from "../models/User";
-
+import Subscription from "../models/Subscription";
 const verify = Promise.promisify(jwt.verify);
 const router = express.Router();
 const ObjectId = mongoose.Types.ObjectId;
@@ -23,12 +23,17 @@ router.post("/", (req, res) => {
         name: req.body.name,
         createdBy: new ObjectId(user._id)
       });
-      chat.users.push(user._id);
-      user.chats.push(chat._id);
-      return Promise.all([user.save(), chat.save()]);
+
+      return Promise.all([user, chat.save()]);
     })
-    .then(([_, chat]) => {
-      res.status(200).send({ added: true, message: "Chat added", chat: chat });
+    .then(([user, chat]) => {
+      const subscription = new Subscription({ user, chat });
+      return subscription.save();
+    })
+    .then(sub => {
+      res
+        .status(200)
+        .send({ added: true, message: "Chat added", chat: sub.chat });
     })
     .catch(err => {
       console.dir(err);
@@ -39,12 +44,19 @@ router.post("/", (req, res) => {
 router.get("/", (req, res) => {
   const regexp = new RegExp(req.query.search, "i");
   const query = { name: regexp };
-  req.query.filter === "joined" &&
-    (query.users = {
-      $not: { $elemMatch: { $eq: new ObjectId(req.decoded.id) } }
-    });
-  Chat.find(query)
-    .select(["name", "_id"])
+  Promise.all([
+    Chat.find(query).select(["name"]),
+    Subscription.find({ user: new ObjectId(req.decoded.id) }).select(["chat"])
+  ])
+    .then(([chats, subChats]) => {
+      if (req.query.filter === "joined") {
+        return chats.filter(chat => {
+          return subChats.reduce((acc, subChat) => {
+            return acc && !subChat.chat.equals(chat._id);
+          }, true);
+        });
+      } else return chats;
+    })
     .then(chats => {
       res.status(200).send(chats);
     })
