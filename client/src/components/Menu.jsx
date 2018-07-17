@@ -92,7 +92,7 @@ class JoinChats extends Component {
 
   render() {
     return (
-      <div className="card p-5 mb-5">
+      <div className="card p-5" style={{height: "100%"}}>
         <h2 className="text-center">Join chats</h2>
         <input
           className="form-control border-primary mt-1"
@@ -126,7 +126,7 @@ class JoinChats extends Component {
             Join
           </button>
         </div>
-        <ul className="list-group mt-3">
+        <ul className="list-group mt-3" style={{overflow: "scroll"}}>
           {this.props.chatList
             .filter(chat => {
               return (
@@ -176,7 +176,7 @@ class Menu extends Component {
       return <Redirect to="/login" />;
     } else {
       return (
-        <div className="card container bg-light p-5" style={{maxHeight: "100%", overflow: "scroll"}}>
+        <div className="card container bg-light p-5" style={{height: "100%"}}>
           <h2 className="text-center">Menu</h2>
           <ul className="nav nav-tabs">
             <li className="nav-item">
