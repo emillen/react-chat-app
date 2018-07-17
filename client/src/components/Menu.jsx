@@ -92,6 +92,7 @@ class JoinChats extends Component {
 
   render() {
     return (
+
       <div className="card p-5" style={{height: "90%"}}>
         <h2 className="text-center">Join chats</h2>
         <input

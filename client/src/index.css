@@ -2,3 +2,27 @@ body > #root > div {
 	height: 100vh;
 	max-height: 100vh;
 }
+
+@media (max-width: 74.9em) {
+  html {
+    font-size: 20px;
+  }
+}
+@media (max-width: 61.9em) {
+  html {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 47.9em) {
+  html {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 33.9em) {
+  html {
+    font-size: 9px;
+  }
+}
+
