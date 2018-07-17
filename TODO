@@ -1,5 +1,9 @@
 Features: 
-	☐ search for users
+	☐ search for users <--- might not do that
+	
+
+client: 
+	☐ make menu page look better
 	
 Archive:
   ✔ enable users to see which chats has been updated with socketio @done(18-07-17 00:42) @project(client)
